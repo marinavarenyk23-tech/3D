@@ -1,6 +1,7 @@
 # 🎨 3D Моделювання: Основи (поглиблений курс)
 
-Автор: Вареник Марина
+Автор: Вареник Марина 
+Група: ХІ-23
 
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Blender](https://img.shields.io/badge/Blender-3.6%2B-orange?logo=blender)](https://www.blender.org/)

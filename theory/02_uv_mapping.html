@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Модуль 2: UV-мапінг та текстурування - поглиблений курс 3D моделювання в Blender">
+    <title>Модуль 2: UV-мапінг та текстурування | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .uv-diagram {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .ascii-art {
+            background: #0d1117;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #c9d1d9;
+            margin: 1rem 0;
+        }
+        .seam-guide {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .seam-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .exercise-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+        .uv-process {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .process-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 12px;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        @media (max-width: 768px) {
+            .process-step {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link active">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація модулями -->
+            <div class="nav-modules">
+                <a href="../theory/01_topology.html" class="nav-module-link">01 Топологія</a>
+                <a href="../theory/02_uv_mapping.html" class="nav-module-link active">02 UV мапінг</a>
+                <a href="../theory/03_materials.html" class="nav-module-link">03 Матеріали</a>
+                <a href="../theory/04_sculpting.html" class="nav-module-link">04 Скульптинг</a>
+                <a href="../theory/05_rigging.html" class="nav-module-link">05 Риггінг</a>
+                <a href="../theory/06_lighting.html" class="nav-module-link">06 Освітлення</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+            </div>
+
+            <h1>🗺️ Модуль 2: UV-мапінг та текстурування</h1>
+            <p class="lead">Цей модуль складається з 4 уроків і присвячений створенню UV-розгорток та накладанню текстур на 3D-моделі.</p>
+
+            <!-- Урок 1 -->
+            <h2>📐 Урок 1. Основи UV-розгортки</h2>
+            
+            <h3>Що таке UV-координати?</h3>
+            <p><strong>UV-мапінг</strong> – це процес проєкції 3D-моделі на 2D-площину для накладання текстур. UV-координати визначають, якій частині 2D-текстури відповідає кожна грань моделі.</p>
+            <p>Аналогія: UV-розгортка – це як розрізати паперову модель і розкласти її на площині. Кожен шматок паперу (UV island) потім можна розфарбувати (накласти текстуру).</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────┐
+│  3D МОДЕЛЬ              UV РОЗГОРТКА (2D)       ТЕКСТУРА        │
+│                                                                 │
+│      ■                      ┌─────┐             ┌─────────┐     │
+│     ╱│╲                     │     │             │ ███████ │     │
+│    ■─■─■                    │  ■  │             │ ███████ │     │
+│     ╲│╱                     │     │             │ ███████ │     │
+│      ■                      └─────┘             └─────────┘     │
+│                                                                 │
+│   куб з текстурою          розгорнуті грані      квадратна      │
+│   на гранях                (UV islands)          текстура       │
+└─────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> UV-координати називаються "U" та "V" замість "X" та "Y", щоб відрізняти їх від 3D-координат простору. Діапазон UV – від 0 до 1.
+            </div>
+
+            <h3>Основні терміни UV-мапінгу</h3>
+            <ul>
+                <li><strong>UV Island (острів)</strong> – група з'єднаних граней, які разом розгортаються на площину</li>
+                <li><strong>Seam (шов)</strong> – позначене ребро, де "розрізається" модель для розгортки</li>
+                <li><strong>Texel Density (щільність текселів)</strong> – кількість пікселів текстури на одиницю площі моделі</li>
+                <li><strong>Stretch (розтягнення)</strong> – спотворення UV-розгортки відносно оригінальної геометрії</li>
+            </ul>
+
+            <!-- Урок 2 -->
+            <h2>✂️ Урок 2. Ручне розміщення швів (Seams)</h2>
+            
+            <h3>Де розміщувати шви?</h3>
+            <p>Правильне розміщення швів – ключ до якісної UV-розгортки. Шви слід розміщувати в непомітних місцях:</p>
+
+            <div class="seam-guide">
+                <div class="seam-card">
+                    <span style="font-size: 2rem;">👤</span>
+                    <h4>Для персонажа</h4>
+                    <p>• За головою (потилиця)<br>• Під пахвами<br>• Внутрішня сторона ніг<br>• Підошви стоп</p>
+                </div>
+                <div class="seam-card">
+                    <span style="font-size: 2rem;">🚗</span>
+                    <h4>Для транспорту</h4>
+                    <p>• По нижній частині<br>• В місцях з'єднань<br>• Всередині колісних арок<br>• По краях деталей</p>
+                </div>
+                <div class="seam-card">
+                    <span style="font-size: 2rem;">🏠</span>
+                    <h4>Для архітектури</h4>
+                    <p>• По кутах будівель<br>• По краях даху<br>• На стиках стін<br>• На невидимих сторонах</p>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────┐
+│  ПРАВИЛЬНІ ТА НЕПРАВИЛЬНІ ШВИ                                    │
+│                                                                 │
+│  ПРАВИЛЬНО (непомітні місця)     НЕПРАВИЛЬНО (на виду)         │
+│  ┌─────────────────┐             ┌─────────────────┐           │
+│  │                 │             │    ───────      │           │
+│  │    ┌─────┐      │             │   │       │     │           │
+│  │    │  ●  │      │             │   │   ●   │     │           │
+│  │    └─────┘      │             │   │       │     │           │
+│  │        ───      │             │    ───────      │           │
+│  └─────────────────┘             └─────────────────┘           │
+│  (шви ззаду та знизу)             (шви на обличчі)              │
+└─────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Якщо не знаєте, де краще розмістити шов – уявіть, що ви робите модель з тканини. Там, де ви б зробили розріз або шов, там і маркуйте Seam!
+            </div>
+
+            <!-- Урок 3 -->
+            <h2>🎨 Урок 3. Текстурування: растрові текстури та Texture Paint</h2>
+            
+            <h3>Типи текстур</h3>
+            <ul>
+                <li><strong>Растрові текстури</strong> – звичайні зображення (PNG, JPG, TGA) з фіксованою роздільною здатністю</li>
+                <li><strong>PBR текстури</strong> – набір текстур (Albedo, Normal, Roughness, Metallic) для фотореалістичних матеріалів</li>
+                <li><strong>Texture Paint</strong> – малювання текстури безпосередньо на 3D-моделі в Blender</li>
+            </ul>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────┐
+│  ПРОЦЕС TEXTURE PAINT                                           │
+│                                                                 │
+│   3D Модель          Texture Paint режим        Результат       │
+│   ┌─────┐            ┌─────────────┐          ┌─────┐          │
+│   │     │            │   🖌️        │          │ ███ │          │
+│   │  ■  │     →      │   малюємо   │    →     │ ███ │          │
+│   │     │            │   на моделі │          │ ███ │          │
+│   └─────┘            └─────────────┘          └─────┘          │
+│                                                                 │
+│  Малюнок автоматично записується в UV-текстуру                  │
+└─────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Основні налаштування Texture Paint</h3>
+            <ul>
+                <li><strong>Brush Settings</strong> – розмір, сила, жорсткість пензля</li>
+                <li><strong>Color</strong> – вибір кольору (палітра або eyedropper)</li>
+                <li><strong>Texture Mask</strong> – використання текстур як масок для пензля</li>
+                <li><strong>Stencil</strong> – режим трафарету для точного малювання</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ Важливо:</strong> Перед використанням Texture Paint переконайтеся, що ви створили текстуру для малювання! В UV Editor: Image → New, задайте розмір (наприклад, 2048×2048).
+            </div>
+
+            <!-- Урок 4 -->
+            <h2>📤 Урок 4. Експорт UV-схеми та робота із зовнішніми редакторами</h2>
+            
+            <h3>Як експортувати UV-схему</h3>
+            <div class="uv-process">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div>У режимі Edit Mode виділіть всі грані (A)</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div>UV Editor → UV → Export UV Layout</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div>Виберіть формат (PNG) та розмір</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div>Відкрийте схему в GIMP/Krita/Photoshop</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div>Намалюйте текстуру, використовуючи UV-лінії як орієнтир</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">6</div>
+                    <div>Імпортуйте текстуру назад у Blender (Image Texture)</div>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────┐
+│  UV-СХЕМА ТА ТЕКСТУРА                                           │
+│                                                                 │
+│   Експортована UV-схема          Намальована текстура           │
+│   ┌─────────────────┐            ┌─────────────────┐           │
+│   │  ┌───┐ ┌───┐    │            │  ███ ███        │           │
+│   │  │   │ │   │    │            │  ███ ███        │           │
+│   │  └───┘ └───┘    │     →      │                 │           │
+│   │  ┌─────────┐    │            │  ██████████     │           │
+│   │  │         │    │            │  ██████████     │           │
+│   │  └─────────┘    │            │                 │           │
+│   └─────────────────┘            └─────────────────┘           │
+│                                                                 │
+│   (контур UV островів)            (текстура згідно з UV)        │
+└─────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Baking (запікання) текстур</h3>
+            <p><strong>Baking</strong> – це процес перенесення інформації з одного об'єкта на текстуру іншого. Найчастіше використовується для:</p>
+            <ul>
+                <li><strong>Normal Map</strong> – запікання деталей з high-poly на low-poly модель</li>
+                <li><strong>Ambient Occlusion</strong> – запікання затінення</li>
+                <li><strong>Diffuse Map</strong> – запікання кольору з матеріалів</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Порада для Normal Map baking:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>High-poly модель має перекривати low-poly</li>
+                    <li>Увімкніть Cage (Extrusion) для запобігання артефактам</li>
+                    <li>Використовуйте Selected to Active (спочатку виберіть high-poly, потім low-poly)</li>
+                    <li>Встановіть Margin (відступ) 8-16 пікселів для чистих країв</li>
+                </ul>
+            </div>
+
+            <!-- Практичні завдання модуля -->
+            <h2>✏️ Практичні завдання до модуля</h2>
+            
+            <div class="exercise-box">
+                <h3>📝 Завдання 1: UV-розгортка транспортного засобу</h3>
+                <p><strong>Створіть UV-розгортку для моделі автомобіля або корабля</strong> з правильно розміщеними швами.</p>
+                <ul>
+                    <li>Розмістіть шви в логічних місцях (стики деталей, нижня частина)</li>
+                    <li>Виконайте UV Unwrap</li>
+                    <li>Розташуйте islands для оптимального використання простору</li>
+                    <li>Перевірте stretch (синій колір = добре, червоний = погано)</li>
+                </ul>
+                <p><a href="../practice/labs.html#lab2" style="color: var(--primary-color);">Детальна лабораторна робота →</a></p>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 2: Texture Paint</h3>
+                <p><strong>Намалюйте текстуру безпосередньо на 3D-моделі</strong> в режимі Texture Paint.</p>
+                <ul>
+                    <li>Створіть нову текстуру (2048×2048)</li>
+                    <li>Намалюйте базовий колір та деталі</li>
+                    <li>Додайте подряпини, бруд або інші ефекти</li>
+                    <li>Використайте Stencil для точного нанесення</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 3: Baking Normal Map</h3>
+                <p><strong>Виконайте baking normal map</strong> з high-poly скульптингу на low-poly модель.</p>
+                <ul>
+                    <li>Створіть high-poly модель з деталями (скульптинг)</li>
+                    <li>Створіть low-poly модель з чистою топологією</li>
+                    <li>Розгорніть UV для low-poly моделі</li>
+                    <li>Виконайте baking Normal map</li>
+                    <li>Застосуйте normal map до low-poly моделі</li>
+                </ul>
+            </div>
+
+            <!-- Ключові поняття модуля -->
+            <h2>🔑 Ключові поняття модуля</h2>
+            <ul>
+                <li><strong>UV координати</strong> – 2D-координати для накладання текстур</li>
+                <li><strong>Seam (шов)</strong> – розріз моделі для UV-розгортки</li>
+                <li><strong>UV Island</strong> – група граней, розгорнутих разом</li>
+                <li><strong>Texel Density</strong> – щільність пікселів текстури</li>
+                <li><strong>Texture Paint</strong> – малювання текстури на 3D-моделі</li>
+                <li><strong>Baking</strong> – запікання інформації в текстуру</li>
+                <li><strong>Normal Map</strong> – текстура, що імітує деталі геометрії</li>
+            </ul>
+
+            <!-- Тести для самоперевірки -->
+            <h2>📋 Тести для самоперевірки</h2>
+            
+            <div class="tip-box">
+                <p><strong>Питання 1:</strong> Що означають синій та червоний колір у режимі перевірки stretch UV?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Синій колір означає відсутність або мінімальне спотворення UV-розгортки (добре). Червоний колір вказує на значне розтягнення або стиснення UV островів (погано). Ідеальна UV-розгортка має бути переважно синьою або зеленою.</p>
+                </details>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>Питання 2:</strong> Чому важлива однакова texel density для різних об'єктів сцени?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Однакова texel density забезпечує візуальну узгодженість – всі об'єкти будуть мати однакову чіткість текстур. Якщо texel density різна, деякі об'єкти виглядатимуть більш розмитими (низька щільність) або надто деталізованими (висока щільність) відносно інших.</p>
+                </details>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>Питання 3:</strong> Яка різниця між Smart UV Project та ручною розгорткою?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Smart UV Project автоматично створює шви та розгортку на основі кута між гранями. Це швидко, але не завжди оптимально для складних моделей. Ручна розгортка дозволяє контролювати розміщення швів та форму islands, що дає кращий результат для органічних моделей та персонажів.</p>
+                </details>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>Питання 4:</strong> Для чого потрібен Cage при baking normal map?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Cage (клітка) – це зовнішня оболонка, яка визначає, як далеко від low-poly моделі будуть «збиратися» деталі з high-poly. Правильний Cage запобігає артефактам baking та забезпечує чисту normal map без спотворень на краях.</p>
+                </details>
+            </div>
+
+            <!-- Часті помилки -->
+            <h2>⚠️ Часті помилки та їх вирішення</h2>
+            
+            <div class="warning-box">
+                <strong>❌ Помилка 1:</strong> Перекриття UV island (один острів накладається на інший)<br>
+                <strong>✅ Рішення:</strong> В UV Editor перемістіть islands так, щоб вони не перекривалися. Використовуйте Pack Islands (UV → Pack Islands).
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 2:</strong> Сильне розтягнення текстури (stretch)<br>
+                <strong>✅ Рішення:</strong> Додайте більше швів та зробіть розгортку заново. Використовуйте Minimize Stretch (UV → Minimize Stretch).
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 3:</strong> Низька texel density на великих поверхнях<br>
+                <strong>✅ Рішення:</strong> Збільште розмір текстури або використовуйте окремі UDIM тайли для різних частин моделі.
+            </div>
+
+            <!-- Навігація по уроку -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../theory/01_topology.html" style="color: var(--primary-color);">← Модуль 1: Топологія</a>
+                <a href="../theory/03_materials.html" style="color: var(--primary-color);">Модуль 3: Матеріали →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

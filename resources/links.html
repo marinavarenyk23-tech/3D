@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Корисні ресурси для вивчення 3D моделювання в Blender - текстури, HDRI, туторіали, спільноти">
+    <title>Корисні ресурси | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .resource-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .resource-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .resource-card h3 {
+            margin: 0.5rem 0;
+            color: var(--primary-color);
+        }
+        .resource-card h3 a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .resource-card h3 a:hover {
+            text-decoration: underline;
+        }
+        .resource-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .tag {
+            background: rgba(59, 130, 246, 0.15);
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--primary-color);
+        }
+        .category-section {
+            margin-bottom: 2rem;
+        }
+        .category-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        @media (max-width: 768px) {
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація -->
+            <div class="nav-modules">
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+                <a href="../practice/final_project.html" class="nav-module-link">Фінальний проект</a>
+                <a href="../resources/links.html" class="nav-module-link active">📚 Корисні ресурси</a>
+            </div>
+
+            <h1>📚 Корисні ресурси для 3D моделювання</h1>
+            <p class="lead">Зібрання найкращих безкоштовних ресурсів для вивчення Blender, текстур, HDRI, туторіалів та спільнот.</p>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Додайте цю сторінку до закладок – вона буде корисна протягом всього курсу та для подальшого самостійного навчання!
+            </div>
+
+            <!-- Офіційні ресурси -->
+            <div class="category-section">
+                <h2 class="category-title">🔷 Офіційні ресурси Blender</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">🌐</div>
+                        <h3><a href="https://www.blender.org/" target="_blank" rel="noopener noreferrer">Blender.org</a></h3>
+                        <div class="resource-description">Офіційний сайт Blender. Завантаження програми, новини, спільнота.</div>
+                        <div class="resource-tags"><span class="tag">Офіційний</span><span class="tag">Завантаження</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">📖</div>
+                        <h3><a href="https://docs.blender.org/manual/en/latest/" target="_blank" rel="noopener noreferrer">Blender Manual</a></h3>
+                        <div class="resource-description">Повна документація Blender українською та іншими мовами.</div>
+                        <div class="resource-tags"><span class="tag">Документація</span><span class="tag">Довідка</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🎬</div>
+                        <h3><a href="https://www.blender.org/download/demo-files/" target="_blank" rel="noopener noreferrer">Demo Files</a></h3>
+                        <div class="resource-description">Приклади готових проектів Blender для вивчення.</div>
+                        <div class="resource-tags"><span class="tag">Приклади</span><span class="tag">.blend файли</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Текстури та HDRI -->
+            <div class="category-section">
+                <h2 class="category-title">🖼️ Текстури та HDRI</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">🏔️</div>
+                        <h3><a href="https://polyhaven.com/" target="_blank" rel="noopener noreferrer">Poly Haven</a></h3>
+                        <div class="resource-description">Найкращий безкоштовний ресурс для HDRI, PBR текстур та 3D-моделей. CC0 ліцензія (повністю безкоштовно).</div>
+                        <div class="resource-tags"><span class="tag">HDRI</span><span class="tag">PBR текстури</span><span class="tag">CC0</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🎨</div>
+                        <h3><a href="https://ambientcg.com/" target="_blank" rel="noopener noreferrer">AmbientCG</a></h3>
+                        <div class="resource-description">Велика бібліотека PBR текстур (дерево, метал, камінь, цегла). Безкоштовно, без реєстрації.</div>
+                        <div class="resource-tags"><span class="tag">PBR текстури</span><span class="tag">Матеріали</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🌍</div>
+                        <h3><a href="https://hdri-haven.com/" target="_blank" rel="noopener noreferrer">HDRI Haven</a></h3>
+                        <div class="resource-description">Спеціалізований ресурс для HDRI (частина Poly Haven).</div>
+                        <div class="resource-tags"><span class="tag">HDRI</span><span class="tag">Освітлення</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🖌️</div>
+                        <h3><a href="https://3dtextures.me/" target="_blank" rel="noopener noreferrer">3DTextures.me</a></h3>
+                        <div class="resource-description">Якісні PBR текстури різних матеріалів. Безкоштовно для особистого використання.</div>
+                        <div class="resource-tags"><span class="tag">PBR текстури</span><span class="tag">Матеріали</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">✨</div>
+                        <h3><a href="https://www.texturecan.com/" target="_blank" rel="noopener noreferrer">TextureCan</a></h3>
+                        <div class="resource-description">Безкоштовні текстури високої роздільної здатності.</div>
+                        <div class="resource-tags"><span class="tag">Текстури</span><span class="tag">Фотореалізм</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🎭</div>
+                        <h3><a href="https://cc0textures.com/" target="_blank" rel="noopener noreferrer">CC0 Textures</a></h3>
+                        <div class="resource-description">Текстури з ліцензією CC0 (повністю безкоштовно для будь-яких цілей).</div>
+                        <div class="resource-tags"><span class="tag">CC0</span><span class="tag">Текстури</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Навчальні туторіали (YouTube) -->
+            <div class="category-section">
+                <h2 class="category-title">🎓 Навчальні туторіали (YouTube)</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">🍩</div>
+                        <h3><a href="https://www.youtube.com/@blenderguru" target="_blank" rel="noopener noreferrer">Blender Guru</a></h3>
+                        <div class="resource-description">Класичний канал Ендрю Прайса. Знаменитий туторіал "Donut" – найкращий старт для початківців.</div>
+                        <div class="resource-tags"><span class="tag">Початківцям</span><span class="tag">Англійська</span><span class="tag">Популярний</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">⚡</div>
+                        <h3><a href="https://www.youtube.com/@UCG8D3OKRgCfYJtDfO6pW9Fg" target="_blank" rel="noopener noreferrer">CG Geek</a></h3>
+                        <div class="resource-description">Стів Лунд – туторіали з моделювання, скульптингу, VFX.</div>
+                        <div class="resource-tags"><span class="tag">Скульптинг</span><span class="tag">VFX</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🦴</div>
+                        <h3><a href="https://www.youtube.com/@RoyalSkiesLLC" target="_blank" rel="noopener noreferrer">Royal Skies</a></h3>
+                        <div class="resource-description">Якісні туторіали з анімації, риггінгу, освітлення в Blender.</div>
+                        <div class="resource-tags"><span class="tag">Анімація</span><span class="tag">Риггінг</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">💪</div>
+                        <h3><a href="https://www.youtube.com/@YanSculpts" target="_blank" rel="noopener noreferrer">YanSculpts</a></h3>
+                        <div class="resource-description">Скульптинг персонажів, часники (timelapse) з коментарями.</div>
+                        <div class="resource-tags"><span class="tag">Скульптинг</span><span class="tag">Персонажі</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🎨</div>
+                        <h3><a href="https://www.youtube.com/@Ducky3D" target="_blank" rel="noopener noreferrer">Ducky 3D</a></h3>
+                        <div class="resource-description">Стилізована 3D-графіка, процедурні матеріали, абстрактна анімація.</div>
+                        <div class="resource-tags"><span class="tag">Стилізація</span><span class="tag">Процедурні</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🏛️</div>
+                        <h3><a href="https://www.youtube.com/@DecodedTV" target="_blank" rel="noopener noreferrer">Decoded</a></h3>
+                        <div class="resource-description">Архітектурна візуалізація в Blender.</div>
+                        <div class="resource-tags"><span class="tag">Архітектура</span><span class="tag">Візуалізація</span><span class="tag">Англійська</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Україномовні туторіали -->
+            <div class="category-section">
+                <h2 class="category-title">🇺🇦 Україномовні туторіали</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">🎬</div>
+                        <h3><a href="https://www.youtube.com/@blenderukraine" target="_blank" rel="noopener noreferrer">Blender Ukraine</a></h3>
+                        <div class="resource-description">Україномовний канал з туторіалами від початкового до просунутого рівня.</div>
+                        <div class="resource-tags"><span class="tag">Українська</span><span class="tag">Всі рівні</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">📐</div>
+                        <h3><a href="#" target="_blank">(Шукаємо українських авторів)</a></h3>
+                        <div class="resource-description">Якщо ви знаєте якісні україномовні канали – надішліть посилання викладачу!</div>
+                        <div class="resource-tags"><span class="tag">Українська</span><span class="tag">Допомогти</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Спільноти та форуми -->
+            <div class="category-section">
+                <h2 class="category-title">👥 Спільноти та форуми</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">💬</div>
+                        <h3><a href="https://blenderartists.org/" target="_blank" rel="noopener noreferrer">Blender Artists</a></h3>
+                        <div class="resource-description">Найбільша спільнота Blender. Галереня робіт, обговорення, допомога.</div>
+                        <div class="resource-tags"><span class="tag">Форум</span><span class="tag">Галерея</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">📸</div>
+                        <h3><a href="https://www.reddit.com/r/blender/" target="_blank" rel="noopener noreferrer">r/blender (Reddit)</a></h3>
+                        <div class="resource-description">Активна спільнота Blender на Reddit. Тисячі робіт та обговорень щодня.</div>
+                        <div class="resource-tags"><span class="tag">Reddit</span><span class="tag">Галерея</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🎨</div>
+                        <h3><a href="https://www.artstation.com/" target="_blank" rel="noopener noreferrer">ArtStation</a></h3>
+                        <div class="resource-description">Професійна платформа для 3D-художників. Референси, роботи, натхнення.</div>
+                        <div class="resource-tags"><span class="tag">Портфоліо</span><span class="tag">Натхнення</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">📘</div>
+                        <h3><a href="https://www.facebook.com/groups/blenderukr/" target="_blank" rel="noopener noreferrer">Blender Ukraine (Facebook)</a></h3>
+                        <div class="resource-description">Україномовна спільнота Blender у Facebook.</div>
+                        <div class="resource-tags"><span class="tag">Facebook</span><span class="tag">Українська</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Платні курси (безкоштовні альтернативи) -->
+            <div class="category-section">
+                <h2 class="category-title">📖 Платформи з курсами (є безкоштовний контент)</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">🎓</div>
+                        <h3><a href="https://cgcookie.com/" target="_blank" rel="noopener noreferrer">CG Cookie</a></h3>
+                        <div class="resource-description">Професійні курси з Blender (є безкоштовний контент).</div>
+                        <div class="resource-tags"><span class="tag">Платний</span><span class="tag">Є безкоштовне</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">📺</div>
+                        <h3><a href="https://www.youtube.com/@UCd_1VQwAuh6kJ8JZ2sWz8tQ" target="_blank" rel="noopener noreferrer">Blender Studio</a></h3>
+                        <div class="resource-description">Офіційні туторіали від команди Blender. Безкоштовні та платні.</div>
+                        <div class="resource-tags"><span class="tag">Офіційний</span><span class="tag">Є безкоштовне</span><span class="tag">Англійська</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">📚</div>
+                        <h3><a href="https://www.udemy.com/courses/search/?q=blender&price=price-free" target="_blank" rel="noopener noreferrer">Udemy (безкоштовні курси)</a></h3>
+                        <div class="resource-description">Безкоштовні курси Blender на Udemy.</div>
+                        <div class="resource-tags"><span class="tag">Безкоштовно</span><span class="tag">Українська/Англійська</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Референси та натхнення -->
+            <div class="category-section">
+                <h2 class="category-title">🖼️ Референси та натхнення</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">📌</div>
+                        <h3><a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest</a></h3>
+                        <div class="resource-description">Найкращий ресурс для пошуку референсів (пошук: "3D character reference", "scifi environment concept").</div>
+                        <div class="resource-tags"><span class="tag">Референси</span><span class="tag">Натхнення</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🏆</div>
+                        <h3><a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer">Behance</a></h3>
+                        <div class="resource-description">Портфоліо дизайнерів та 3D-художників.</div>
+                        <div class="resource-tags"><span class="tag">Портфоліо</span><span class="tag">Натхнення</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">📸</div>
+                        <h3><a href="https://www.instagram.com/explore/tags/blender3d/" target="_blank" rel="noopener noreferrer">Instagram #blender3d</a></h3>
+                        <div class="resource-description">Тисячі робіт інших 3D-художників для натхнення.</div>
+                        <div class="resource-tags"><span class="tag">Instagram</span><span class="tag">Натхнення</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add-ons та інструменти -->
+            <div class="category-section">
+                <h2 class="category-title">⚙️ Корисні Add-ons для Blender</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">🔧</div>
+                        <h3><a href="https://docs.blender.org/manual/en/latest/addons/interface/bolt.html" target="_blank" rel="noopener noreferrer">Bolt Factory</a></h3>
+                        <div class="resource-description">Вбудований add-on для створення гайок, болтів, кріплень.</div>
+                        <div class="resource-tags"><span class="tag">Вбудований</span><span class="tag">Моделювання</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🧩</div>
+                        <h3><a href="https://docs.blender.org/manual/en/latest/addons/import_export/nodes_pbr.html" target="_blank" rel="noopener noreferrer">Node Wrangler</a></h3>
+                        <div class="resource-description">Потужний add-on для роботи з нодами (вбудований).</div>
+                        <div class="resource-tags"><span class="tag">Вбудований</span><span class="tag">Ноди</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">🎨</div>
+                        <h3><a href="https://github.com/samytichadou/online_material_exporter" target="_blank" rel="noopener noreferrer">Online Material Exporter</a></h3>
+                        <div class="resource-description">Експорт матеріалів з онлайн бібліотек.</div>
+                        <div class="resource-tags"><span class="tag">Безкоштовний</span><span class="tag">Матеріали</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Скани зображень для текстур -->
+            <div class="category-section">
+                <h2 class="category-title">📸 Скани зображень (створення власних текстур)</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">📷</div>
+                        <h3><a href="https://www.shadertoolkit.com/" target="_blank" rel="noopener noreferrer">Shader Toolkit</a></h3>
+                        <div class="resource-description">Інструменти для створення PBR текстур.</div>
+                        <div class="resource-tags"><span class="tag">PBR</span><span class="tag">Створення текстур</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Ліцензії та авторські права:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Завжди перевіряйте ліцензію перед використанням текстур/моделей у комерційних проектах</li>
+                    <li>CC0 – можна використовувати без обмежень (навіть для продажу)</li>
+                    <li>CC BY – потрібно вказати автора</li>
+                    <li>CC BY-NC – тільки для некомерційного використання</li>
+                    <li>Для навчальних проектів більшість безкоштовних текстур підходять, але краще обирати CC0</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Як знайти більше ресурсів?</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>YouTube: "Blender tutorial [тема]"</li>
+                    <li>GitHub: "awesome blender" – колекції корисних ресурсів</li>
+                    <li>Reddit: r/blender, r/blenderhelp, r/blenderTutorials</li>
+                    <li>Google: "free PBR textures", "HDRI pack free"</li>
+                </ul>
+            </div>
+
+            <!-- Навігація -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../tests/assessment_rubric.html" style="color: var(--primary-color);">← Критерії оцінювання</a>
+                <a href="../theory/glossary.html" style="color: var(--primary-color);">Глосарій →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../resources/links.html">Ресурси</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

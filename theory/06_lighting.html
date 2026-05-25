@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Модуль 6: Освітлення та рендер - створення реалістичного освітлення та фінальний рендер в Blender">
+    <title>Модуль 6: Освітлення та рендер | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .light-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .light-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .light-card:hover {
+            transform: translateY(-4px);
+        }
+        .light-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .light-card h4 {
+            margin: 0.5rem 0;
+            color: var(--primary-color);
+        }
+        .ascii-art {
+            background: #0d1117;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #c9d1d9;
+            margin: 1rem 0;
+        }
+        .three-point {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .exercise-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .shortcut-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .shortcut-table td:first-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            width: 35%;
+        }
+        .final-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .light-types {
+                grid-template-columns: 1fr;
+            }
+            .comparison-table {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link active">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація модулями -->
+            <div class="nav-modules">
+                <a href="../theory/01_topology.html" class="nav-module-link">01 Топологія</a>
+                <a href="../theory/02_uv_mapping.html" class="nav-module-link">02 UV мапінг</a>
+                <a href="../theory/03_materials.html" class="nav-module-link">03 Матеріали</a>
+                <a href="../theory/04_sculpting.html" class="nav-module-link">04 Скульптинг</a>
+                <a href="../theory/05_rigging.html" class="nav-module-link">05 Риггінг</a>
+                <a href="../theory/06_lighting.html" class="nav-module-link active">06 Освітлення</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+            </div>
+
+            <h1>💡 Модуль 6: Освітлення та рендер</h1>
+            <p class="lead">Цей модуль складається з 2 уроків і присвячений створенню професійного освітлення та фінальному рендеру сцени. Ви навчитеся налаштовувати світло, обирати рендер-двигун та отримувати якісне зображення.</p>
+
+            <!-- Урок 1 -->
+            <h2>💡 Урок 1. Освітлення в Cycles vs Eevee</h2>
+            
+            <h3>Типи джерел світла в Blender</h3>
+            <div class="light-types">
+                <div class="light-card">
+                    <span class="light-icon">💡</span>
+                    <h4>Point</h4>
+                    <p>Точкове джерело – світло випромінюється в усіх напрямках з однієї точки.</p>
+                    <small>Застосування: лампочка, свічка, факел</small>
+                </div>
+                <div class="light-card">
+                    <span class="light-icon">☀️</span>
+                    <h4>Sun</h4>
+                    <p>Сонячне світло – паралельні промені з нескінченно віддаленого джерела.</p>
+                    <small>Застосування: денне освітлення, відкриті сцени</small>
+                </div>
+                <div class="light-card">
+                    <span class="light-icon">🔦</span>
+                    <h4>Spot</h4>
+                    <p>Прожектор – конус світла з фокусом та краєм.</p>
+                    <small>Застосування: сцена, театр, ліхтарик</small>
+                </div>
+                <div class="light-card">
+                    <span class="light-icon">📐</span>
+                    <h4>Area</h4>
+                    <p>Площадкове джерело – м'яке світло з прямокутної або круглої площини.</p>
+                    <small>Застосування: студійне світло, вікна</small>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ТИПИ ДЖЕРЕЛ СВІТЛА – ВІЗУАЛІЗАЦІЯ                                       │
+│                                                                         │
+│  Point               Sun                 Spot                Area       │
+│  ┌─────────┐        ┌─────────┐         ┌─────────┐         ┌─────────┐│
+│  │    ●    │        │  ☀️     │         │   🔦    │         │  ███    ││
+│  │   /│\   │        │   ↓     │         │   │     │         │  ███    ││
+│  │  / │ \  │        │   ↓     │         │   ↓     │         │  ███    ││
+│  │ /  │  \ │        │   ↓     │         │  / \    │         │  ↓↓↓    ││
+│  │/   │   \│        │   ↓     │         │ /   \   │         │  ↓↓↓    ││
+│  └─────────┘        └─────────┘         └─────────┘         └─────────┘│
+│  Світло в усі       Паралельні          Конус               Рівномірне  │
+│  боки               промені             світла               м'яке       │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Схема трьох точок освітлення (Three-Point Lighting)</h3>
+            <p>Класична схема освітлення, яка використовується в фотографії, кіно та 3D-графіці для створення об'ємного та професійного вигляду об'єкта.</p>
+
+            <div class="three-point">
+                <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  СХЕМА ТРЬОХ ТОЧОК ОСВІТЛЕННЯ                                            │
+│                                                                         │
+│                              ☀️ Back Light                              │
+│                              (контрове)                                 │
+│                                  ↑                                      │
+│                                  │                                      │
+│                    ┌─────────────────┐                                  │
+│                    │                 │                                  │
+│        ☀️ Key      │      ■■■        │                                  │
+│        Light      │     ■   ■       │                                  │
+│        (основне)  │    ■  ●  ■      │                                  │
+│                    │     ■   ■       │                                  │
+│                    │      ■■■        │                                  │
+│                    └─────────────────┘                                  │
+│                          ↖                                              │
+│                           ☀️ Fill Light                                 │
+│                           (заповнююче)                                  │
+│                                                                         │
+│  Key Light (45°) – основне джерело, створює об'єм                      │
+│  Fill Light (протилежний бік) – заповнює тіні, менша інтенсивність      │
+│  Back Light (ззаду) – відділяє об'єкт від фону, створює контур          │
+└─────────────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+
+            <h3>HDRI – освітлення на основі зображення</h3>
+            <p><strong>HDRI (High Dynamic Range Imaging)</strong> – це зображення з високим динамічним діапазоном, яке використовується для освітлення сцени. HDRI забезпечує реалістичне навколишнє освітлення, відбиття та затінення одним кліком.</p>
+
+            <div class="tip-box">
+                <strong>💌 Як використовувати HDRI:</strong>
+                <ol style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>World Properties → Surface → Surface → Environment Texture</li>
+                    <li>Відкрийте HDRI файл (з polyhaven.com або інших ресурсів)</li>
+                    <li>Налаштуйте Strength (інтенсивність)</li>
+                    <li>Для контролю напрямку обертайте HDRI: <code>Z</code> в режимі об'єкта</li>
+                </ol>
+            </div>
+
+            <h3>Cycles vs Eevee – порівняння рендер-двигунів</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Характеристика</th><th>Cycles</th><th>Eevee</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Тип рендеру</td><td>Ray tracing (трасування променів)</td><td>Real-time (rasterization)</td></tr>
+                    <tr><td>Якість тіней</td><td>Ідеальна, фізично точна</td><td>Наближена, потребує налаштувань</td></tr>
+                    <tr><td>Відбиття</td><td>Точні, включаючи багаторазові</td><td>Screen-space reflection (екранне простір)</td></tr>
+                    <tr><td>Прозорість (Refraction)</td><td>Фізично точна</td><td>Симульована, потребує Refraction probe</td></tr>
+                    <tr><td>SSS (субповерхневе)</td><td>Точне</td><td>Наближене</td></tr>
+                    <tr><td>Caustics (каустика)</td><td>Так</td><td>Ні (тільки симуляція)</td></tr>
+                    <tr><td>Швидкість</td><td>Повільна (хвилини на кадр)</td><td>Миттєва (секунди на кадр)</td></tr>
+                    <tr><td>GPU підтримка</td><td>Так (CUDA, OptiX, HIP)</td><td>Так</td></tr>
+                    <tr><td><strong>Рекомендація</strong></td><td>Фінальний рендер, фотореалізм</td><td>Прев'ю, анімація, стилізація</td></tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Використовуйте Eevee для налаштування сцени та швидких прев'ю, а Cycles для фінального рендеру. Зменшіть кількість семплів (Samples) в Cycles для тестових рендерів (64-128), потім збільште для фінального (512-2048).
+            </div>
+
+            <!-- Урок 2 -->
+            <h2>🎬 Урок 2. Рендер та композитинг</h2>
+            
+            <h3>Налаштування рендеру</h3>
+            <div class="tip-box">
+                <strong>🔧 Основні налаштування рендеру:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li><strong>Output Properties → Resolution</strong> – роздільна здатність (1920×1080 для HD, 3840×2160 для 4K)</li>
+                    <li><strong>Output Properties → Frame Rate</strong> – частота кадрів для анімації (24 або 30 fps)</li>
+                    <li><strong>Render Properties → Sampling</strong> – кількість семплів (Render = 512-2048 для Cycles)</li>
+                    <li><strong>Render Properties → Light Paths</strong> – кількість відбиттів (Max Bounces = 8-12)</li>
+                    <li><strong>Render Properties → Performance</strong> – увімкніть GPU (Compute Device в налаштуваннях)</li>
+                    <li><strong>Output Properties → Output</strong> – формат файлу (PNG для зображень, FFmpeg для відео)</li>
+                </ul>
+            </div>
+
+            <h3>Композитинг в Blender</h3>
+            <p><strong>Композитинг (Compositing)</strong> – це пост-обробка рендеру для покращення зображення: додавання ефектів, корекція кольорів, глибина різкості тощо.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  БАЗОВА СТРУКТУРА КОМПОЗИТИНГУ                                           │
+│                                                                         │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐               │
+│  │ Render      │     │ Glare       │     │ Composite   │               │
+│  │ Layers      │────▶│ (відблиски) │────▶│ Output      │               │
+│  └─────────────┘     └─────────────┘     └─────────────┘               │
+│         │                                                     │         │
+│         │     ┌─────────────┐                               │         │
+│         │     │ Color       │                               │         │
+│         └────▶│ Balance     │───────────────────────────────┘         │
+│               │ (колір)     │                                           │
+│               └─────────────┘                                           │
+│                                                                         │
+│  Популярні ноди композитингу:                                           │
+│  - Glare – відблиски, світіння                                          │
+│  - Color Balance – корекція RGB                                        │
+│  - RGB Curves – криві кольорів                                          │
+│  - Defocus – розмиття (глибина різкості)                               │
+│  - Lens Distortion – дисторія об'єктива                                │
+│  - Denoise – шумодав (для Cycles)                                      │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Формати збереження</h3>
+            <ul>
+                <li><strong>PNG</strong> – основний формат для зображень (з підтримкою альфа-каналу)</li>
+                <li><strong>OpenEXR</strong> – професійний формат з високою глибиною кольору (для пост-обробки)</li>
+                <li><strong>FFmpeg Video</strong> – відео (MP4, AVI, MOV). Оберіть H.264 кодек для хорошого балансу якість/розмір</li>
+                <li><strong>Animation (PNG sequence)</strong> – послідовність зображень для анімації (безпечніше, ніж одразу відео)</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ Важливо:</strong> Для анімації завжди рендерте в PNG sequence, а потім збирайте в відео. Якщо рендер перерветься, ви не втратите вже зроблені кадри!
+            </div>
+
+            <!-- Фінальний проект -->
+            <h2>🏆 Підсумковий проект</h2>
+            
+            <div class="exercise-box">
+                <h3>Фінальне завдання: Створіть комплексну 3D-сцену</h3>
+                <p><strong>Об'єднайте всі набуті навички для створення завершеної 3D-сцени.</strong></p>
+                
+                <h4>Вимоги до проекту:</h4>
+                <ul>
+                    <li>Мінімум <strong>10 унікальних 3D-об'єктів</strong></li>
+                    <li>Використання модифікаторів (Array, Mirror, Subdivision, Boolean)</li>
+                    <li>Власні матеріали (процедурні або з текстурами)</li>
+                    <li>UV-розгортка для складних об'єктів</li>
+                    <li>Правильне освітлення (3+ джерела або HDRI)</li>
+                    <li>Фінальний рендер в 4K (3840×2160)</li>
+                    <li>(Опціонально) Анімація камери або об'єктів</li>
+                </ul>
+
+                <h4>Теми для натхнення:</h4>
+                <ul>
+                    <li>🏠 Інтер'єр кімнати в стилі кіберпанк</li>
+                    <li>🧝 Персонаж фентезі з оточенням</li>
+                    <li>🚀 Футуристичний космічний корабель</li>
+                    <li>🏰 Фантастичний пейзаж (замок на скелі)</li>
+                    <li>🍽️ Натюрморт зі складними матеріалами (скло, метал, дерево)</li>
+                </ul>
+
+                <p><a href="../practice/final_project.html" style="color: var(--primary-color);">📖 Детальний опис фінального проекту →</a></p>
+            </div>
+
+            <!-- Чекліст підготовки до рендеру -->
+            <h2>✅ Чекліст перед фінальним рендером</h2>
+            <div class="final-checklist">
+                <div class="checklist-item">☐ Перевірте, що всі нормалі спрямовані назовні (<code>Shift + N</code> в Edit Mode)</div>
+                <div class="checklist-item">☐ Переконайтесь, що всі модифікатори застосовані або залишені доцільно</div>
+                <div class="checklist-item">☐ Перевірте UV-розгортку на спотворення (синій/червоний колір)</div>
+                <div class="checklist-item">☐ Налаштуйте камеру – композиція, фокусна відстань, глибина різкості</div>
+                <div class="checklist-item">☐ Увімкніть GPU Compute в налаштуваннях Cycles</div>
+                <div class="checklist-item">☐ Встановіть оптимальну кількість семплів (512-2048)</div>
+                <div class="checklist-item">☐ Увімкніть Denoise для чистого зображення</div>
+                <div class="checklist-item">☐ Перевірте шлях збереження файлів</div>
+                <div class="checklist-item">☐ Зробіть тестовий рендер малої роздільної здатності</div>
+                <div class="checklist-item">☐ Для анімації: рендерте в PNG sequence</div>
+            </div>
+
+            <!-- Клавіші швидкого доступу -->
+            <h2>⌨️ Клавіші швидкого доступу для освітлення та рендеру</h2>
+            
+            <table class="shortcut-table">
+                <tr><td><code>F12</code></td><td>Рендер зображення</td></tr>
+                <tr><td><code>Ctrl + F12</code></td><td>Рендер анімації</td></tr>
+                <tr><td><code>F11</code></td><td>Відкрити останній рендер</td></tr>
+                <tr><td><code>Z</code> (режим об'єкта)</td><td>Переключити вигляд (Solid/Material/Rendered)</td></tr>
+                <tr><td><code>Ctrl + Alt + 0</code></td><td>Встановити камеру з поточного виду</td></tr>
+                <tr><td><code>N</code> (в режимі камери)</td><td>Налаштування камери (Depth of Field)</td></tr>
+                <tr><td><code>G</code> + <code>Z</code> (камера)</td><td>Приблизити/віддалити камеру</td></tr>
+                <tr><td><code>R</code> (камера)</td><td>Повернути камеру</td></tr>
+            </table>
+
+            <!-- Типові помилки -->
+            <h2>⚠️ Часті помилки при освітленні та рендері</h2>
+            
+            <div class="warning-box">
+                <strong>❌ Помилка 1:</strong> "Чорний" рендер або дуже темне зображення<br>
+                <strong>✅ Рішення:</strong> Перевірте, чи не прихована камера (вимкнена іконка камери в Outliner). Додайте більше світла або збільште Strength HDRI.
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 2:</strong> Шум на рендері навіть при 1000+ семплах<br>
+                <strong>✅ Рішення:</strong> Увімкніть Denoise (Render Properties → Sampling → Denoise). Для Cycles використовуйте OptiX Denoise (найкраща якість).
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 3:</strong> Артефакти тіней в Eevee<br>
+                <strong>✅ Рішення:</strong> Збільште Cube Size та Cascade Size в Shadow налаштуваннях. Додайте більше Light Probes (Irradiance Volume, Reflection Cubemap).
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 4:</strong> Рендер займає дуже багато часу<br>
+                <strong>✅ Рішення:</strong> Зменшіть кількість семплів до 256-512. Використовуйте Light Paths → Max Bounces = 4-6. Увімкніть GPU Compute.
+            </div>
+
+            <!-- Ключові поняття модуля -->
+            <h2>🔑 Ключові поняття модуля</h2>
+            <ul>
+                <li><strong>Key Light / Fill Light / Back Light</strong> – три точки класичного освітлення</li>
+                <li><strong>HDRI</strong> – освітлення на основі зображення високого динамічного діапазону</li>
+                <li><strong>Cycles</strong> – рендер-двигун Ray tracing (фізично точний)</li>
+                <li><strong>Eevee</strong> – рендер-двигун реального часу (rasterization)</li>
+                <li><strong>Sampling (Samples)</strong> – кількість променів на піксель (чим більше, тим чистіше)</li>
+                <li><strong>Denoise</strong> – шумодав для очищення рендеру</li>
+                <li><strong>Композитинг</strong> – пост-обробка зображення</li>
+                <li><strong>Depth of Field (DOF)</strong> – глибина різкості</li>
+                <li><strong>Light Probe</strong> – об'єкт для збору даних про освітлення в Eevee</li>
+            </ul>
+
+            <!-- Ресурси для HDRI -->
+            <h3>📦 Де взяти безкоштовні HDRI?</h3>
+            <ul>
+                <li><a href="https://polyhaven.com/hdris" target="_blank">Poly Haven</a> – найкращий безкоштовний ресурс, CC0 ліцензія</li>
+                <li><a href="https://hdri-haven.com/" target="_blank">HDRI Haven</a> – (тепер частина Poly Haven)</li>
+                <li><a href="https://ambientcg.com/" target="_blank">AmbientCG</a> – HDRIs та PBR текстури</li>
+                <li><a href="https://www.hdri-skies.com/" target="_blank">HDRI Skies</a> – небо та хмари</li>
+            </ul>
+
+            <!-- Навігація по уроку -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../theory/05_rigging.html" style="color: var(--primary-color);">← Модуль 5: Риггінг</a>
+                <a href="../practice/final_project.html" style="color: var(--primary-color);">Фінальний проект →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Модуль 4: Скульптинг - створення органічних форм в Blender">
+    <title>Модуль 4: Скульптинг | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .sculpt-brushes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .brush-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .brush-card:hover {
+            transform: translateY(-4px);
+        }
+        .brush-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .brush-card h4 {
+            margin: 0.5rem 0;
+            color: var(--primary-color);
+        }
+        .ascii-art {
+            background: #0d1117;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #c9d1d9;
+            margin: 1rem 0;
+        }
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .process-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 12px;
+        }
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .exercise-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .shortcut-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .shortcut-table td:first-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            width: 30%;
+        }
+        @media (max-width: 768px) {
+            .sculpt-brushes {
+                grid-template-columns: 1fr;
+            }
+            .process-step {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link active">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація модулями -->
+            <div class="nav-modules">
+                <a href="../theory/01_topology.html" class="nav-module-link">01 Топологія</a>
+                <a href="../theory/02_uv_mapping.html" class="nav-module-link">02 UV мапінг</a>
+                <a href="../theory/03_materials.html" class="nav-module-link">03 Матеріали</a>
+                <a href="../theory/04_sculpting.html" class="nav-module-link active">04 Скульптинг</a>
+                <a href="../theory/05_rigging.html" class="nav-module-link">05 Риггінг</a>
+                <a href="../theory/06_lighting.html" class="nav-module-link">06 Освітлення</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+            </div>
+
+            <h1>🖌️ Модуль 4: Скульптинг</h1>
+            <p class="lead">Цей модуль складається з 3 уроків і присвячений цифровому скульптингу – створенню органічних форм за допомогою пензлів (брейшів). Скульптинг ідеально підходить для персонажів, тварин, монстрів, рельєфів та будь-яких органічних об'єктів.</p>
+
+            <!-- Урок 1 -->
+            <h2>🖌️ Урок 1. Інструменти скульптингу: базові брейші</h2>
+            
+            <h3>Що таке скульптинг?</h3>
+            <p><strong>Скульптинг</strong> – це метод 3D-моделювання, який імітує роботу з глиною. Замість точного маніпулювання вершинами, художник "ліпить" форму, використовуючи різні пензлі (брейші). Це інтуїтивний спосіб створення органічних форм.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ПОРІВНЯННЯ: ПОЛІГОНАЛЬНЕ МОДЕЛЮВАННЯ vs СКУЛЬПТИНГ                     │
+│                                                                         │
+│  Полігональне моделювання           Скульптинг                         │
+│  ┌─────────────────┐                ┌─────────────────┐                │
+│  │  ■────■────■    │                │    ╱╲            │                │
+│  │  │    │    │    │                │   ╱  ╲           │                │
+│  │  ■────■────■    │       vs        │  ╱────╲          │                │
+│  │  │    │    │    │                │ ╱      ╲         │                │
+│  │  ■────■────■    │                │▄▄▄▄▄▄▄▄▄▄        │                │
+│  └─────────────────┘                └─────────────────┘                │
+│  (точне маніпулювання)              (ліплення пензлем)                 │
+│  Добре для: технічних об'єктів      Добре для: органічних форм         │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Основні брейші (пензлі) для скульптингу</h3>
+            <div class="sculpt-brushes">
+                <div class="brush-card">
+                    <span class="brush-icon">✏️</span>
+                    <h4>Draw</h4>
+                    <p>Піднімає поверхню. Основний брейш для створення форми.</p>
+                    <small>Клавіша: <code>Shift + S</code></small>
+                </div>
+                <div class="brush-card">
+                    <span class="brush-icon">🧱</span>
+                    <h4>Clay Strips</h4>
+                    <p>Створює плавні гребені. Ідеальний для м'язів, складок.</p>
+                    <small>Клавіша: <code>Shift + C</code></small>
+                </div>
+                <div class="brush-card">
+                    <span class="brush-icon">🖐️</span>
+                    <h4>Grab</h4>
+                    <p>Перетягує великі області. Для грубого формування.</p>
+                    <small>Клавіша: <code>Shift + G</code></small>
+                </div>
+                <div class="brush-card">
+                    <span class="brush-icon">🌀</span>
+                    <h4>Smooth</h4>
+                    <p>Згладжує поверхню. Виправляє артефакти.</p>
+                    <small>Клавіша: <code>Shift + F</code></small>
+                </div>
+                <div class="brush-card">
+                    <span class="brush-icon">📏</span>
+                    <h4>Crease</h4>
+                    <p>Створює чіткі лінії, морщини, шви.</p>
+                    <small>Клавіша: <code>Shift + E</code></small>
+                </div>
+                <div class="brush-card">
+                    <span class="brush-icon">🎈</span>
+                    <h4>Inflate</h4>
+                    <p>Роздуває поверхню. Для об'ємних форм.</p>
+                    <small>Клавіша: <code>Shift + I</code></small>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ВІЗУАЛІЗАЦІЯ ЕФЕКТІВ БРЕЙШІВ                                           │
+│                                                                         │
+│  Draw           Clay Strips      Grab            Smooth                │
+│  ┌─────┐        ┌─────┐          ┌─────┐          ┌─────┐              │
+│  │  ▲  │        │ ▓▓▓ │          │  →  │          │  ~  │              │
+│  │ /│\ │        │ ▓▓▓ │          │  →  │          │  ~  │              │
+│  │/ │ \│        │ ▓▓▓ │          │  →  │          │  ~  │              │
+│  └─────┘        └─────┘          └─────┘          └─────┘              │
+│  підйом         гребені          переміщення      згладжування          │
+│                                                                         │
+│  Crease          Inflate         Pinch           Mask                  │
+│  ┌─────┐        ┌─────┐          ┌─────┐          ┌─────┐              │
+│  │  │  │        │  ○  │          │  >< │          │ ███ │              │
+│  │  │  │        │ /│\ │          │  >< │          │ ███ │              │
+│  │  │  │        │/ │ \│          │  >< │          │ ███ │              │
+│  └─────┘        └─────┘          └─────┘          └─────┘              │
+│  чітка лінія    роздування       звуження         маскування           │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Змінюйте розмір та силу пензля клавішами <code>F</code> (розмір) та <code>Shift + F</code> (сила) під час малювання. Це пришвидшує роботу в рази!
+            </div>
+
+            <!-- Урок 2 -->
+            <h2>🌀 Урок 2. Динамічна топологія (Dyntopo) та Remesh</h2>
+            
+            <h3>Що таке Dyntopo?</h3>
+            <p><strong>Dyntopo (Dynamic Topology)</strong> – режим скульптингу, який динамічно додає полігони там, де це необхідно (в місцях деталізації). Він дозволяє починати з дуже простої моделі та додавати полігони лише там, де потрібна деталізація.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  DYNTOPO В ДІЇ                                                            │
+│                                                                         │
+│  Початкова сітка        Після Dyntopo (низька)    Після Dyntopo (висока)│
+│  ┌─────────────┐        ┌─────────────┐          ┌─────────────┐        │
+│  │    ████     │        │   ██████    │          │  ████████   │        │
+│  │   ██████    │        │  ████████   │          │ ██████████  │        │
+│  │  ████████   │   →    │ ██████████  │    →     │████████████ │        │
+│  │   ██████    │        │  ████████   │          │ ██████████  │        │
+│  │    ████     │        │   ██████    │          │  ████████   │        │
+│  └─────────────┘        └─────────────┘          └─────────────┘        │
+│  (100 полігонів)        (1000 полігонів)         (10000 полігонів)      │
+│                                                                         │
+│  Деталізація додається ТІЛЬКИ там, де ви малюєте!                       │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Налаштування Dyntopo</h3>
+            <ul>
+                <li><strong>Detail Size (Detect)</strong> – розмір деталізації в пікселях. Менше число = більше полігонів.</li>
+                <li><strong>Detail Type</strong> – тип деталізації: Constant (фіксована), Brush (залежить від пензля), Relative (відносна до масштабу).</li>
+                <li><strong>Refine Method</strong> – Subdivide Edges (поділ ребер) або Collapse Edges (видалення полігонів при зменшенні).</li>
+            </ul>
+
+            <h3>Remesh – перебудова топології</h3>
+            <p><strong>Remesh</strong> – інструмент для перебудови всієї топології скульптингу з однаковим розміром полігонів (воксельний ремеш). Використовується перед ретопологією або для вирівнювання щільності сітки.</p>
+
+            <div class="tip-box">
+                <strong>💌 Як використовувати Dyntopo:</strong>
+                <ol style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Увімкніть Dyntopo в верхній панелі (іконка каменя)</li>
+                    <li>Встановіть Detail Size (почніть з 10-15 px)</li>
+                    <li>Почніть скульптинг – полігони будуть додаватися автоматично</li>
+                    <li>Для більшої деталізації зменште Detail Size (4-8 px)</li>
+                    <li>Використовуйте Remesh (Ctrl + R) для повної перебудови сітки</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Важливо:</strong> Dyntopo генерує трикутники (tris), а не чотирикутники (quads). Це нормально для скульптингу. Для анімації знадобиться ретопологія (чисті quads).
+            </div>
+
+            <!-- Урок 3 -->
+            <h2>✨ Урок 3. Альфа-брейшинг та деталізація</h2>
+            
+            <h3>Що таке альфа-брейшинг?</h3>
+            <p><strong>Альфа (Alpha)</strong> – це текстура у форматі grayscale (чорно-біла), яка визначає форму відбитка пензля. Альфа-брейшинг дозволяє створювати складні деталі одним рухом: луска, шкіра, тріщини, клепки, броня.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  АЛЬФА-БРЕЙШИНГ ПРИКЛАД                                                  │
+│                                                                         │
+│  Альфа текстура        Результат на моделі                               │
+│  ┌─────────────┐       ┌─────────────────────────────────────────────┐  │
+│  │  ███ ███    │       │  ╱╲      ╱╲      ╱╲      ╱╲                 │  │
+│  │  ███ ███    │       │ ╱  ╲    ╱  ╲    ╱  ╲    ╱  ╲                │  │
+│  │  ███ ███    │   →   │▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄   │  │
+│  │  ███ ███    │       │  ███ ███ ███ ███ ███ ███ ███ ███             │  │
+│  │  ███ ███    │       │  ███ ███ ███ ███ ███ ███ ███ ███             │  │
+│  └─────────────┘       └─────────────────────────────────────────────┘  │
+│  (луска)               (луска на поверхні)                             │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Де взяти альфа-текстури?</h3>
+            <ul>
+                <li><strong>Вбудовані альфи Blender</strong> – Textures Properties → Brush → Texture</li>
+                <li><strong>Безкоштовні бібліотеки</strong> – BlendSwap, ArtStation (деякі безкоштовні), OpenGameArt</li>
+                <li><strong>Створення власних</strong> – малювання в GIMP/Krita/Photoshop (grayscale, PNG)</li>
+            </ul>
+
+            <h3>Stencil – режим трафарету</h3>
+            <p><strong>Stencil</strong> – режим, де альфа текстура проєктується на модель через спеціальний трафарет. Це дозволяє точно розміщувати деталі, наприклад, татуювання, шрами, логотипи.</p>
+
+            <div class="tip-box">
+                <strong>💡 Порада для Stencil:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Увімкніть Stencil (Brush Settings → Texture → Mapping → Stencil)</li>
+                    <li>Переміщуйте трафарет: <code>R</code> (обертання), <code>S</code> (масштаб), <code>Ctrl + F</code> (скинути позицію)</li>
+                    <li>Малюйте, поки трафарет активний</li>
+                </ul>
+            </div>
+
+            <!-- Етапи скульптингу -->
+            <h2>📋 Етапи створення скульптингу</h2>
+            
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div><strong>Блокування (Blockout)</strong> – створення базової форми за допомогою Grab, Clay Strips. Не турбуйтесь про деталі.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div><strong>Основна форма (Primary Form)</strong> – додавання основних рис: голова, тулуб, кінцівки. Використовуйте Draw, Inflate.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div><strong>Вторинні форми (Secondary Form)</strong> – м'язи, складки, суглоби. Clay Strips, Crease.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div><strong>Деталізація (Tertiary Form)</strong> – дрібні деталі: шкіра, пори, тріщини, луска. Альфа-брейші, Stencil.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div><strong>Фінальна обробка</strong> – згладжування артефактів (Smooth), перевірка симетрії.</div>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ЕТАПИ СКУЛЬПТИНГУ ГОЛОВИ                                               │
+│                                                                         │
+│  Етап 1: Блокування    Етап 2: Основна форма  Етап 3: Деталізація       │
+│  ┌─────────────┐       ┌─────────────┐        ┌─────────────┐           │
+│  │      ██     │       │     ◯ ◯     │        │    ◯  ◯     │           │
+│  │     ████    │       │      █      │        │      █      │           │
+│  │    ██████   │   →   │     ███     │   →    │     ███     │           │
+│  │     ████    │       │      █      │        │    █████    │           │
+│  │      ██     │       │     ███     │        │   ███████   │           │
+│  └─────────────┘       └─────────────┘        └─────────────┘           │
+│                                                                         │
+│  Етап 4: Фінальна форма   (очі, ніс, вуха, рот, текстура)              │
+│  ┌─────────────┐                                                        │
+│  │    ◯   ◯    │                                                        │
+│  │      █      │                                                        │
+│  │     ███     │                                                        │
+│  │    █████    │                                                        │
+│  │   ███████   │                                                        │
+│  └─────────────┘                                                        │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <!-- Клавіші швидкого доступу -->
+            <h2>⌨️ Клавіші швидкого доступу для скульптингу</h2>
+            
+            <table class="shortcut-table">
+                <tr><td><code>F</code></td><td>Змінити розмір пензля</td></tr>
+                <tr><td><code>Shift + F</code></td><td>Змінити силу пензля</td></tr>
+                <tr><td><code>Ctrl + F</code></td><td>Змінити інтенсивність (для масок)</td></tr>
+                <tr><td><code>Shift + S</code></td><td>Активувати брейш Draw</td></tr>
+                <tr><td><code>Shift + C</code></td><td>Активувати Clay Strips</td></tr>
+                <tr><td><code>Shift + G</code></td><td>Активувати Grab</td></tr>
+                <tr><td><code>Shift + F</code></td><td>Активувати Smooth (повторно)</td></tr>
+                <tr><td><code>M</code></td><td>Активувати маскування</td></tr>
+                <tr><td><code>Alt + M</code></td><td>Очистити всі маски</td></tr>
+                <tr><td><code>Ctrl + R</code></td><td>Remesh (перебудова сітки)</td></tr>
+                <tr><td><code>X</code></td><td>Увімкнути X-axis mirror (симетрія)</td></tr>
+            </table>
+
+            <!-- Практичні завдання модуля -->
+            <h2>✏️ Практичні завдання до модуля</h2>
+            
+            <div class="exercise-box">
+                <h3>📝 Завдання 1: Скульптинг голови</h3>
+                <p><strong>Створіть скульптинг голови людини або фантастичної істоти</strong> з використанням базових брейшів та симетрії.</p>
+                <ul>
+                    <li>Почніть зі сфери або куба</li>
+                    <li>Увімкніть X-axis mirror (симетрію)</li>
+                    <li>Використовуйте Grab для грубої форми</li>
+                    <li>Додайте очні западини, ніс, рот, вуха</li>
+                    <li>Використовуйте Smooth для згладжування</li>
+                </ul>
+                <p><a href="../practice/labs.html#lab4" style="color: var(--primary-color);">Детальна лабораторна робота →</a></p>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 2: Деталізація з Dyntopo</h3>
+                <p><strong>Додайте деталізацію</strong> до вашої моделі за допомогою Dyntopo.</p>
+                <ul>
+                    <li>Увімкніть Dyntopo з Detail Size 10 px</li>
+                    <li>Зменште розмір до 5 px для дрібних деталей</li>
+                    <li>Додайте текстуру шкіри (альфа-брейш)</li>
+                    <li>Використайте Crease для зморшок</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 3: Альфа-брейшинг</h3>
+                <p><strong>Створіть модель з повторюваними деталями</strong> (луска, броня, клепки) за допомогою альфа-брейшів.</p>
+                <ul>
+                    <li>Знайдіть або створіть альфа-текстуру луски/броні</li>
+                    <li>Завантажте альфу в налаштування пензля</li>
+                    <li>Нанесіть деталі на поверхню моделі</li>
+                    <li>Спробуйте режим Stencil для точного розміщення</li>
+                </ul>
+            </div>
+
+            <!-- Типові помилки -->
+            <h2>⚠️ Часті помилки в скульптингу</h2>
+            
+            <div class="warning-box">
+                <strong>❌ Помилка 1:</strong> Занадто маленький розмір деталізації Dyntopo з самого початку<br>
+                <strong>✅ Рішення:</strong> Починайте з великого розміру (15-20 px) для грубої форми. Зменшуйте розмір поступово, коли потрібна деталізація.
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 2:</strong> Ігнорування масок (Mask)<br>
+                <strong>✅ Рішення:</strong> Використовуйте маски для захисту вже готових областей. <code>M</code> – малювати маску, <code>Alt + M</code> – очистити.
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 3:</strong> Занадто сильне використання Smooth<br>
+                <strong>✅ Рішення:</strong> Smooth зменшує деталізацію. Використовуйте його тільки для виправлення артефактів.
+            </div>
+
+            <!-- Ключові поняття модуля -->
+            <h2>🔑 Ключові поняття модуля</h2>
+            <ul>
+                <li><strong>Скульптинг</strong> – метод 3D-моделювання "ліпленням" пензлями</li>
+                <li><strong>Брейш (Brush)</strong> – пензель з певною формою та функцією</li>
+                <li><strong>Dyntopo</strong> – динамічна топологія, додавання полігонів при малюванні</li>
+                <li><strong>Remesh</strong> – повна перебудова топології з однаковими полігонами</li>
+                <li><strong>Альфа (Alpha)</strong> – текстура для форми відбитка пензля</li>
+                <li><strong>Stencil</strong> – режим трафарету для точного проєктування альфи</li>
+                <li><strong>Mask</strong> – захист областей моделі від змін</li>
+                <li><strong>Symmetry (Mirror)</strong> – симетричний скульптинг по осі X</li>
+            </ul>
+
+            <!-- Навігація по уроку -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../theory/03_materials.html" style="color: var(--primary-color);">← Модуль 3: Матеріали</a>
+                <a href="../theory/05_rigging.html" style="color: var(--primary-color);">Модуль 5: Риггінг →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class

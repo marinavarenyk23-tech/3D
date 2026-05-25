@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Глосарій термінів 3D моделювання - Blender, топологія, UV, матеріали, скульптинг, риггінг, анімація">
+    <title>Глосарій термінів | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .glossary-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .glossary-category {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .category-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .category-header:hover {
+            opacity: 0.9;
+        }
+        .category-header .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+        .category-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        .category-content {
+            padding: 1rem;
+            display: block;
+        }
+        .category-content.collapsed {
+            display: none;
+        }
+        .term-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
+        }
+        .term-item:last-child {
+            border-bottom: none;
+        }
+        .term-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .term-definition {
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        .term-example {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .search-container {
+            margin-bottom: 2rem;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .alphabet-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .alphabet-link {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .alphabet-link:hover, .alphabet-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+            .alphabet-link {
+                width: 32px;
+                height: 32px;
+                font-size: 0.85rem;
+            }
+            .term-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link active">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="nav-modules">
+                <a href="../theory/01_topology.html" class="nav-module-link">01 Топологія</a>
+                <a href="../theory/02_uv_mapping.html" class="nav-module-link">02 UV мапінг</a>
+                <a href="../theory/03_materials.html" class="nav-module-link">03 Матеріали</a>
+                <a href="../theory/04_sculpting.html" class="nav-module-link">04 Скульптинг</a>
+                <a href="../theory/05_rigging.html" class="nav-module-link">05 Риггінг</a>
+                <a href="../theory/06_lighting.html" class="nav-module-link">06 Освітлення</a>
+                <a href="../theory/glossary.html" class="nav-module-link active">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+            </div>
+
+            <h1>📖 Глосарій термінів 3D моделювання</h1>
+            <p class="lead">Алфавітний довідник ключових термінів, понять та абревіатур для курсу "3D моделювання: основи". Використовуйте пошук або навігацію за буквами.</p>
+
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Пошук термінів... (наприклад, UV, топологія, Subdivision)">
+            </div>
+
+            <div class="alphabet-nav" id="alphabetNav">
+                <a href="#" data-letter="A" class="alphabet-link">A</a>
+                <a href="#" data-letter="B" class="alphabet-link">B</a>
+                <a href="#" data-letter="C" class="alphabet-link">C</a>
+                <a href="#" data-letter="D" class="alphabet-link">D</a>
+                <a href="#" data-letter="E" class="alphabet-link">E</a>
+                <a href="#" data-letter="F" class="alphabet-link">F</a>
+                <a href="#" data-letter="G" class="alphabet-link">G</a>
+                <a href="#" data-letter="H" class="alphabet-link">H</a>
+                <a href="#" data-letter="I" class="alphabet-link">I</a>
+                <a href="#" data-letter="J" class="alphabet-link">J</a>
+                <a href="#" data-letter="K" class="alphabet-link">K</a>
+                <a href="#" data-letter="L" class="alphabet-link">L</a>
+                <a href="#" data-letter="M" class="alphabet-link">M</a>
+                <a href="#" data-letter="N" class="alphabet-link">N</a>
+                <a href="#" data-letter="O" class="alphabet-link">O</a>
+                <a href="#" data-letter="P" class="alphabet-link">P</a>
+                <a href="#" data-letter="Q" class="alphabet-link">Q</a>
+                <a href="#" data-letter="R" class="alphabet-link">R</a>
+                <a href="#" data-letter="S" class="alphabet-link">S</a>
+                <a href="#" data-letter="T" class="alphabet-link">T</a>
+                <a href="#" data-letter="U" class="alphabet-link">U</a>
+                <a href="#" data-letter="V" class="alphabet-link">V</a>
+                <a href="#" data-letter="W" class="alphabet-link">W</a>
+                <a href="#" data-letter="X" class="alphabet-link">X</a>
+                <a href="#" data-letter="Y" class="alphabet-link">Y</a>
+                <a href="#" data-letter="Z" class="alphabet-link">Z</a>
+                <a href="#" data-letter="1-9" class="alphabet-link">0-9</a>
+            </div>
+
+            <div id="glossaryContent" class="glossary-grid">
+                <!-- A -->
+                <div class="glossary-category" data-category="A">
+                    <div class="category-header">
+                        <span>A</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="alpha">
+                            <div class="term-title">Alpha (Альфа-канал)</div>
+                            <div class="term-definition">Канал зображення, що визначає прозорість пікселів (0 – повністю прозорий, 255 – непрозорий). Використовується в текстурах для створення отворів або напівпрозорих матеріалів.</div>
+                            <div class="term-example">💡 Приклад: текстура листя дерева – стовбур і гілки непрозорі, фон прозорий.</div>
+                        </div>
+                        <div class="term-item" data-term="alpha brush">
+                            <div class="term-title">Alpha Brush (Альфа-брейш)</div>
+                            <div class="term-definition">Текстура у форматі grayscale, яка визначає форму відбитка пензля під час скульптингу. Дозволяє створювати складні деталі одним рухом.</div>
+                            <div class="term-example">💡 Приклад: альфа у вигляді луски – один клік додає цілу ділянку луски на модель.</div>
+                        </div>
+                        <div class="term-item" data-term="ambient occlusion">
+                            <div class="term-title">Ambient Occlusion (AO)</div>
+                            <div class="term-definition">Метод затінення, що симулює затемнення в кутах та заглибленнях, куди потрапляє менше розсіяного світла. Додає об'єму моделі.</div>
+                            <div class="term-example">💡 Приклад: затемнення під підборіддям персонажа, у складках одягу.</div>
+                        </div>
+                        <div class="term-item" data-term="animation">
+                            <div class="term-title">Animation (Анімація)</div>
+                            <div class="term-definition">Процес створення ілюзії руху шляхом послідовної зміни положення, обертання, масштабу або форми об'єкта в часі. Основа – ключові кадри (keyframes).</div>
+                            <div class="term-example">💡 Приклад: walk cycle персонажа – циклічна анімація ходьби.</div>
+                        </div>
+                        <div class="term-item" data-term="armature">
+                            <div class="term-title">Armature (Арматура)</div>
+                            <div class="term-definition">Скелетна структура, що складається з кісток (bones), використовується для деформації та анімації mesh-об'єктів. Керує рухом персонажів або механізмів.</div>
+                            <div class="term-example">💡 Приклад: скелет персонажа з кістками для ніг, рук, хребта, голови.</div>
+                        </div>
+                        <div class="term-item" data-term="array modifier">
+                            <div class="term-title">Array Modifier</div>
+                            <div class="term-definition">Модифікатор, який створює копії об'єкта в лінійному, круговому або сітчастому порядку. Використовується для створення парканів, колон, ґрат, рядів об'єктів.</div>
+                            <div class="term-example">💡 Приклад: стовпці паркану – один сегмент, Array з Count=10 створює весь паркан.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B -->
+                <div class="glossary-category" data-category="B">
+                    <div class="category-header">
+                        <span>B</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="bake">
+                            <div class="term-title">Bake (Бейкінг)</div>
+                            <div class="term-definition">Процес «запікання» інформації з одного об'єкта в текстуру іншого. Наприклад, запікання нормалей з high-poly моделі на low-poly для збереження деталей з оптимізацією.</div>
+                            <div class="term-example">💡 Приклад: скульптинг дракона (high-poly) → baking normal map → текстура накладається на low-poly модель для гри.</div>
+                        </div>
+                        <div class="term-item" data-term="bevel">
+                            <div class="term-title">Bevel (Фаска / Скос)</div>
+                            <div class="term-definition">Модифікатор або інструмент для створення скошених граней на гострих кутах. Покращує реалістичність моделі, оскільки в реальному світі ідеально гострих кутів не існує.</div>
+                            <div class="term-example">💡 Приклад: стіл зі скошеними краями замість гострих – більш реалістичний вигляд.</div>
+                        </div>
+                        <div class="term-item" data-term="blender">
+                            <div class="term-title">Blender</div>
+                            <div class="term-definition">Безкоштовне професійне програмне забезпечення для 3D-моделювання, анімації, рендерингу, скульптингу, композитингу. Основний інструмент курсу.</div>
+                            <div class="term-example">💡 Приклад: Blender використовується для створення 3D-персонажів, архітектурної візуалізації, VFX.</div>
+                        </div>
+                        <div class="term-item" data-term="boolean modifier">
+                            <div class="term-title">Boolean Modifier</div>
+                            <div class="term-definition">Модифікатор, що виконує логічні операції з об'єктами: Union (об'єднання), Difference (різниця), Intersect (перетин). Використовується для створення отворів або складних форм.</div>
+                            <div class="term-example">💡 Приклад: вирізання отвору в стіні за допомогою Difference.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C -->
+                <div class="glossary-category" data-category="C">
+                    <div class="category-header">
+                        <span>C</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="camera">
+                            <div class="term-title">Camera (Камера)</div>
+                            <div class="term-definition">Віртуальний пристрій, що визначає точку огляду сцени під час рендеру. Має налаштування фокусної відстані, глибини різкості, типу проекції.</div>
+                            <div class="term-example">💡 Приклад: налаштування Depth of Field для створення розмитого фону (bokeh).</div>
+                        </div>
+                        <div class="term-item" data-term="colorramp">
+                            <div class="term-title">ColorRamp Node</div>
+                            <div class="term-definition">Нод, який відображає вхідні значення (від 0 до 1) на задану колірну шкалу. Дозволяє створювати градієнти, маски, переходи між кольорами.</div>
+                            <div class="term-example">💡 Приклад: маска для змішування металу та іржі – чорний = метал, білий = іржа.</div>
+                        </div>
+                        <div class="term-item" data-term="cycles">
+                            <div class="term-title">Cycles</div>
+                            <div class="term-definition">Фізично точний рендер-двигун Blender на основі ray tracing. Забезпечує фотореалістичне освітлення, тіні, відбиття, але повільніший за Eevee.</div>
+                            <div class="term-example">💡 Приклад: фінальний рендер сцени для портфоліо – Cycles з 1024 семплами.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D -->
+                <div class="glossary-category" data-category="D">
+                    <div class="category-header">
+                        <span>D</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="dyntopo">
+                            <div class="term-title">Dyntopo (Dynamic Topology)</div>
+                            <div class="term-definition">Режим скульптингу, який динамічно додає полігони там, де це необхідно (в місцях деталізації). Дозволяє ігнорувати початкову топологію.</div>
+                            <div class="term-example">💡 Приклад: початок скульптингу голови – на носі полігони дрібніші, ніж на потилиці.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E -->
+                <div class="glossary-category" data-category="E">
+                    <div class="category-header">
+                        <span>E</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="edge">
+                            <div class="term-title">Edge (Ребро)</div>
+                            <div class="term-definition">Лінійний сегмент, що з'єднує дві вершини. Разом з вершинами та гранями утворює полігональну сітку.</div>
+                            <div class="term-example">💡 Приклад: у куба 12 ребер.</div>
+                        </div>
+                        <div class="term-item" data-term="edge loop">
+                            <div class="term-title">Edge Loop (Петля ребер)</div>
+                            <div class="term-definition">Послідовність ребер, що йдуть вздовж поверхні моделі, де кожне наступне ребро з'єднується з попереднім через вершини. Важливі для правильної деформації.</div>
+                            <div class="term-example">💡 Приклад: петлі навколо очей та рота персонажа для анімації обличчя.</div>
+                        </div>
+                        <div class="term-item" data-term="eevee">
+                            <div class="term-title">Eevee</div>
+                            <div class="term-definition">Рендер-двигун реального часу в Blender, заснований на техніці rasterization. Швидкий, підходить для прев'ю, анімації та ігрових стилів.</div>
+                            <div class="term-example">💡 Приклад: прев'ю сцени під час налаштування освітлення.</div>
+                        </div>
+                        <div class="term-item" data-term="extrude">
+                            <div class="term-title">Extrude (Екструзія)</div>
+                            <div class="term-definition">Інструмент, який створює нові грані, ребра або вершини шляхом «витягування» існуючих. Основний інструмент полігонального моделювання.</div>
+                            <div class="term-example">💡 Приклад: витягування грані куба для створення стіни.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- F -->
+                <div class="glossary-category" data-category="F">
+                    <div class="category-header">
+                        <span>F</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="face">
+                            <div class="term-title">Face (Грань / Полігон)</div>
+                            <div class="term-definition">Поверхня, обмежена трьома (трикутник) або чотирма (чотирикутник) ребрами. Основний будівельний блок 3D-моделей.</div>
+                            <div class="term-example">💡 Приклад: у куба 6 граней.</div>
+                        </div>
+                        <div class="term-item" data-term="fk">
+                            <div class="term-title">FK (Forward Kinematics / Пряма кінематика)</div>
+                            <div class="term-definition">Метод анімації, де кожен суглоб обертається незалежно. Позиція дочірніх кісток залежить від батьківських.</div>
+                            <div class="term-example">💡 Приклад: анімація руки – обертання плеча, потім ліктя, потім кисті.</div>
+                        </div>
+                        <div class="term-item" data-term="fresnel">
+                            <div class="term-title">Fresnel</div>
+                            <div class="term-definition">Оптичний ефект, при якому відбиття стає сильнішим під гострими кутами огляду. Використовується для створення реалістичних матеріалів.</div>
+                            <div class="term-example">💡 Приклад: скло – під кутом видно відбиття, прямо – прозорість.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- G -->
+                <div class="glossary-category" data-category="G">
+                    <div class="category-header">
+                        <span>G</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="grab brush">
+                            <div class="term-title">Grab Brush</div>
+                            <div class="term-definition">Інструмент скульптингу для перетягування великих областей моделі. Використовується для грубого формування, зміни пропорцій.</div>
+                            <div class="term-example">💡 Приклад: видовження ніг персонажа під час блокування.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- H -->
+                <div class="glossary-category" data-category="H">
+                    <div class="category-header">
+                        <span>H</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="hdri">
+                            <div class="term-title">HDRI (High Dynamic Range Imaging)</div>
+                            <div class="term-definition">Зображення з високим динамічним діапазоном, яке використовується для освітлення сцени (освітлення на основі зображення). Забезпечує реалістичне навколишнє освітлення та відбиття.</div>
+                            <div class="term-example">💡 Приклад: HDRI неба з хмарами для освітлення зовнішньої сцени.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- I -->
+                <div class="glossary-category" data-category="I">
+                    <div class="category-header">
+                        <span>I</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="ik">
+                            <div class="term-title">IK (Inverse Kinematics / Зворотна кінематика)</div>
+                            <div class="term-definition">Метод анімації, де позиція кінцевої точки (наприклад, стопи) визначає положення всіх вищестоящих суглобів. Зручний для анімації ніг, рук.</div>
+                            <div class="term-example">💡 Приклад: стопа персонажа залишається на підлозі, коли рухається таз.</div>
+                        </div>
+                        <div class="term-item" data-term="inset">
+                            <div class="term-title">Inset (Інсет / Внутрішня екструзія)</div>
+                            <div class="term-definition">Інструмент, який створює нову грань всередині існуючої, зміщуючи її вершини всередину. Використовується для створення панелей, рамок, заглиблень.</div>
+                            <div class="term-example">💡 Приклад: панель на стіні – Inset створює внутрішню грань.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- K -->
+                <div class="glossary-category" data-category="K">
+                    <div class="category-header">
+                        <span>K</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="keyframe">
+                            <div class="term-title">Keyframe (Ключовий кадр)</div>
+                            <div class="term-definition">Кадр в анімації, на якому задані конкретні значення параметрів об'єкта (положення, обертання, масштаб). Blender автоматично створює проміжні кадри між ключовими.</div>
+                            <div class="term-example">💡 Приклад: keyframe на кадрі 1 – м'яч на підлозі, keyframe на кадрі 30 – м'яч у повітрі.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- L -->
+                <div class="glossary-category" data-category="L">
+                    <div class="category-header">
+                        <span>L</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="loop cut">
+                            <div class="term-title">Loop Cut</div>
+                            <div class="term-definition">Інструмент для розрізання мешу по петлі ребер. Дозволяє додавати деталізацію без порушення топології.</div>
+                            <div class="term-example">💡 Приклад: Loop Cut навколо ліктя персонажа для згинання.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- M -->
+                <div class="glossary-category" data-category="M">
+                    <div class="category-header">
+                        <span>M</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="material">
+                            <div class="term-title">Material (Матеріал)</div>
+                            <div class="term-definition">Набір параметрів (колір, блиск, прозорість, шорсткість), який визначає, як поверхня об'єкта взаємодіє зі світлом.</div>
+                            <div class="term-example">💡 Приклад: метал – Metallic=1, Roughness=0.2; пластик – Metallic=0, Roughness=0.5.</div>
+                        </div>
+                        <div class="term-item" data-term="mesh">
+                            <div class="term-title">Mesh (Сітка / Мєш)</div>
+                            <div class="term-definition">Сукупність вершин, ребер та граней, що утворюють 3D-об'єкт. Основний тип об'єктів у Blender.</div>
+                            <div class="term-example">💡 Приклад: куб, сфера, циліндр – це mesh об'єкти.</div>
+                        </div>
+                        <div class="term-item" data-term="mirror modifier">
+                            <div class="term-title">Mirror Modifier</div>
+                            <div class="term-definition">Модифікатор, який дзеркально відображає mesh по заданій осі. Дозволяє моделювати симетричні об'єкти, працюючи лише з половиною.</div>
+                            <div class="term-example">💡 Приклад: створення симетричної голови персонажа – моделюєте тільки праву половину.</div>
+                        </div>
+                        <div class="term-item" data-term="modifier">
+                            <div class="term-title">Modifier (Модифікатор)</div>
+                            <div class="term-definition">Інструмент не-деструктивного моделювання, який змінює об'єкт без редагування його базової геометрії. Можна додавати, видаляти, змінювати порядок.</div>
+                            <div class="term-example">💡 Приклад: Mirror + Subdivision Surface + Solidify на одному об'єкті.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- N -->
+                <div class="glossary-category" data-category="N">
+                    <div class="category-header">
+                        <span>N</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="term-item" data-term="n-gon">
+                            <div class="term-title">N-gon (Н-кутник)</div>
+                            <div class="term-definition">Грань з більш ніж 4 сторонами (5+ кутів). Вважається поганою топологією, оскільки може викликати артефакти при деформації та Subdivision Surface.</div>
+                            <div class="term-example">💡 Приклад: грань з 5 кутами на плоскій поверхні – може бути допустимо, але для деформації – ні.</div>
+                        </div>
+                        <div class="term-item" data-term="node">
+                            <div class="term-title">Node (Нод)</div>
+                            <div class="term-definition">Базовий елемент візуального програмування в Blender. Кожен нод виконує певну функцію (колір, текстура, математика).</div>
+                            <div class="term-example">💡 Приклад: Noise Texture → ColorRamp → Principled BSDF.</div>
+                        </div>
+                        <div class="term-item" data-term="normal">
+                            <div class="term-title">Normal (Нормаль)</div>
+                            <div class="term-definition">Вектор, перпендикулярний до поверхні в конкретній точці. Визначає, як світло відбивається від поверхні.</div>
+                            <div class

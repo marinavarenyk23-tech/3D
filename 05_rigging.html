@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Модуль 5: Риггінг та анімація - створення скелета та анімація персонажів в Blender">
+    <title>Модуль 5: Риггінг та анімація | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .armature-diagram {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .ascii-art {
+            background: #0d1117;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #c9d1d9;
+            margin: 1rem 0;
+        }
+        .ik-fk-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .ik-card, .fk-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .ik-card { border-left: 4px solid #10b981; }
+        .fk-card { border-left: 4px solid #f59e0b; }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .exercise-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .shortcut-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .shortcut-table td:first-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            width: 30%;
+        }
+        .walk-cycle {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+        .walk-pose {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 0.5rem;
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+        @media (max-width: 768px) {
+            .ik-fk-comparison {
+                grid-template-columns: 1fr;
+            }
+            .walk-cycle {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link active">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація модулями -->
+            <div class="nav-modules">
+                <a href="../theory/01_topology.html" class="nav-module-link">01 Топологія</a>
+                <a href="../theory/02_uv_mapping.html" class="nav-module-link">02 UV мапінг</a>
+                <a href="../theory/03_materials.html" class="nav-module-link">03 Матеріали</a>
+                <a href="../theory/04_sculpting.html" class="nav-module-link">04 Скульптинг</a>
+                <a href="../theory/05_rigging.html" class="nav-module-link active">05 Риггінг</a>
+                <a href="../theory/06_lighting.html" class="nav-module-link">06 Освітлення</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+            </div>
+
+            <h1>🦴 Модуль 5: Риггінг та анімація</h1>
+            <p class="lead">Цей модуль складається з 3 уроків і присвячений створенню скелетної структури (арматури) та анімації персонажів в Blender.</p>
+
+            <!-- Урок 1 -->
+            <h2>🦴 Урок 1. Створення арматури (Rigging)</h2>
+            
+            <h3>Що таке риггінг?</h3>
+            <p><strong>Риггінг (Rigging)</strong> – це процес створення скелетної структури (арматури) для 3D-моделі, яка дозволяє керувати її рухами під час анімації. Кожна кістка (bone) впливає на певну частину моделі, деформуючи її при русі.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  СТРУКТУРА АРМАТУРИ (СКЕЛЕТА)                                           │
+│                                                                         │
+│                         ┌─────┐                                         │
+│                         │Head │ (контроль голови)                       │
+│                         └──┬──┘                                         │
+│                      ┌─────┼─────┐                                      │
+│                      │     │     │                                      │
+│                    ┌─┴─┐ ┌─┴─┐ ┌─┴─┐                                    │
+│                    │Sp │ │Sp │ │Sp │ (хребці)                           │
+│                    │ine│ │ine│ │ine│                                    │
+│                    └───┘ └───┘ └───┘                                    │
+│                      │     │     │                                      │
+│                    ┌─┴─┐   │   ┌─┴─┐                                    │
+│                    │L  │   │   │R  │ (плечі)                            │
+│                    │Arm│   │   │Arm│                                    │
+│                    └───┘   │   └───┘                                    │
+│                         ┌──┴──┐                                         │
+│                         │Hips │ (таз)                                   │
+│                         └─────┘                                         │
+│                      ┌────┴────┐                                        │
+│                    ┌─┴─┐     ┌─┴─┐                                      │
+│                    │L  │     │R  │ (ноги)                               │
+│                    │Leg│     │Leg│                                      │
+│                    └───┘     └───┘                                      │
+│                      │         │                                        │
+│                    ┌─┴─┐     ┌─┴─┐                                      │
+│                    │L  │     │R  │ (стопи)                              │
+│                    │Foot│    │Foot│                                     │
+│                    └───┘     └───┘                                      │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Створення арматури в Blender</h3>
+            <div class="tip-box">
+                <strong>💌 Як створити базову арматуру:</strong>
+                <ol style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Додайте арматуру: <code>Shift + A → Armature → Single Bone</code></li>
+                    <li>Перейдіть в Edit Mode (<code>Tab</code>)</li>
+                    <li>Екструдуйте кістки (<code>E</code>) для створення скелета</li>
+                    <li>Перейменуйте кістки (таз, хребет, ноги, руки)</li>
+                    <li>Налаштуйте батьківські зв'язки (<code>Ctrl + P → Keep Offset</code>)</li>
+                    <li>Перевірте в Pose Mode (<code>Ctrl + Tab</code>)</li>
+                </ol>
+            </div>
+
+            <h3>Weight Painting – призначення ваг</h3>
+            <p><strong>Weight Painting</strong> – це процес призначення ваг (значень від 0 до 1) для вершин моделі. Вага визначає, як сильно кожна кістка впливає на конкретну вершину. Це критично для коректної деформації під час анімації.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  WEIGHT PAINTING ПРИКЛАД                                                 │
+│                                                                         │
+│  Кістка ліктя              Ваги (червоний = 1, синій = 0)               │
+│  ┌─────────────┐           ┌─────────────────────────────────────────┐  │
+│  │      ●      │           │  ██████████                              │  │
+│  │      │      │           │  ██████████  ← 100% вплив (червоний)    │  │
+│  │      │      │           │  ░░░███████                              │  │
+│  │      ●      │     →     │  ░░░░░█████  ← 50% вплив (зелений)      │  │
+│  │      │      │           │  ░░░░░░░███                              │  │
+│  │      │      │           │  ░░░░░░░░░░  ← 0% вплив (синій)         │  │
+│  │      ●      │           └─────────────────────────────────────────┘  │
+│  └─────────────┘                                                        │
+│                                                                         │
+│  Чим ближче до суглоба, тим більший вплив кістки                        │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Використовуйте <strong>Auto Weights</strong> (<code>Ctrl + P → With Automatic Weights</code>) як стартову точку. Потім вручну виправляйте ваги в режимі Weight Paint (<code>Ctrl + Tab</code> в режимі об'єкта).
+            </div>
+
+            <!-- Урок 2 -->
+            <h2>🔄 Урок 2. Пряма та зворотна кінематика (FK/IK)</h2>
+            
+            <div class="ik-fk-comparison">
+                <div class="fk-card">
+                    <h3>📐 Пряма кінематика (FK)</h3>
+                    <p><strong>Forward Kinematics</strong> – метод, де кожен суглоб обертається незалежно. Позиція дочірніх кісток залежить від батьківських.</p>
+                    <ul>
+                        <li>✓ Простий для розуміння</li>
+                        <li>✓ Підходить для рук, хвостів</li>
+                        <li>✗ Складний для позиціювання стоп</li>
+                        <li>✗ Кінцева точка не фіксована</li>
+                    </ul>
+                </div>
+                <div class="ik-card">
+                    <h3>🎯 Зворотна кінематика (IK)</h3>
+                    <p><strong>Inverse Kinematics</strong> – метод, де позиція кінцевої точки (наприклад, стопи) визначає положення всіх вищестоящих суглобів.</p>
+                    <ul>
+                        <li>✓ Зручний для ніг (стопа на місці)</li>
+                        <li>✓ Кінцева точка фіксована</li>
+                        <li>✗ Складніший в налаштуванні</li>
+                        <li>✗ Потрібен Pole Target</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  FK vs IK – ВІЗУАЛЬНЕ ПОРІВНЯННЯ                                        │
+│                                                                         │
+│  FK (Пряма кінематика)            IK (Зворотна кінематика)              │
+│  ┌─────────────────┐              ┌─────────────────┐                   │
+│  │   ●              │              │        ●        │                   │
+│  │    ↘             │              │       ↗         │                   │
+│  │     ◆            │              │      ◆          │                   │
+│  │      ↘           │              │     │           │                   │
+│  │       ◆          │              │     │           │                   │
+│  │        ↘         │              │     ▼           │                   │
+│  │         ◆        │              │     ● (фіксована)│                   │
+│  └─────────────────┘              └─────────────────┘                   │
+│                                                                         │
+│  Кожен суглоб обертається         Кінцева точка визначає                │
+│  незалежно                        позицію всіх вище                     │
+│                                                                         │
+│  Застосування:                    Застосування:                          │
+│  - Руки (махати, вказувати)       - Ноги (стопа на підлозі)             │
+│  - Хвости, щупальця               - Руки (дотягнутися до об'єкта)       │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Налаштування IK для ноги</h3>
+            <div class="tip-box">
+                <strong>💌 Як додати IK:</strong>
+                <ol style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Створіть кістки: thigh → leg → foot</li>
+                    <li>Додайте IK Constraint до кістки foot</li>
+                    <li>Target → вкажіть арматуру, Bone → thigh</li>
+                    <li>Chain Length = 2 (від foot до thigh)</li>
+                    <li>Додайте Pole Target (об'єкт для контролю коліна)</li>
+                    <li>Налаштуйте позицію Pole Target</li>
+                </ol>
+            </div>
+
+            <!-- Урок 3 -->
+            <h2>🎬 Урок 3. Ключова анімація (Keyframe Animation)</h2>
+            
+            <h3>Що таке ключові кадри?</h3>
+            <p><strong>Keyframes (Ключові кадри)</strong> – це кадри в анімації, на яких задані конкретні значення параметрів об'єкта (положення, обертання, масштаб). Blender автоматично створює проміжні кадри між ключовими (інтерполяція).</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ПРИНЦИП КЛЮЧОВИХ КАДРІВ                                                 │
+│                                                                         │
+│  Позиція Y                                                              │
+│      ▲                                                                  │
+│   10 ├──────────● (frame 30)                                           │
+│      │         ╱                                                        │
+│      │        ╱                                                         │
+│      │       ╱                                                          │
+│      │      ╴╴╴╴╴╴╴╴╴ (автоматична інтерполяція)                        │
+│      │     ╱                                                            │
+│      │    ╱                                                             │
+│    0 ├──● (frame 1)                                                     │
+│      └────────────────────────────────────► Час                        │
+│        0         15         30                                          │
+│                                                                         │
+│  frame 1:  Y = 0  (початок)                                            │
+│  frame 30: Y = 10 (кінець)                                             │
+│  → Blender створює всі проміжні кадри!                                  │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Цикл ходьби (Walk Cycle)</h3>
+            <p>Walk cycle – це циклічна анімація ходьби, яка повторюється. Класичний цикл складається з 4 основних поз:</p>
+
+            <div class="walk-cycle">
+                <div class="walk-pose">
+                    <span style="font-size: 1.5rem;">🚶</span>
+                    <h4>Contact</h4>
+                    <small>frame 1, 25</small>
+                </div>
+                <div class="walk-pose">
+                    <span style="font-size: 1.5rem;">👇</span>
+                    <h4>Down</h4>
+                    <small>frame 7</small>
+                </div>
+                <div class="walk-pose">
+                    <span style="font-size: 1.5rem;">🚶‍➡️</span>
+                    <h4>Pass</h4>
+                    <small>frame 13</small>
+                </div>
+                <div class="walk-pose">
+                    <span style="font-size: 1.5rem;">👆</span>
+                    <h4>Up</h4>
+                    <small>frame 19</small>
+                </div>
+                <div class="walk-pose">
+                    <span style="font-size: 1.5rem;">🚶</span>
+                    <h4>Contact</h4>
+                    <small>frame 25</small>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  WALK CYCLE – ПОЗИ                                                        │
+│                                                                         │
+│  Contact          Down            Pass            Up                   │
+│  (frame 1)        (frame 7)       (frame 13)      (frame 19)            │
+│  ┌─────────┐      ┌─────────┐     ┌─────────┐     ┌─────────┐          │
+│  │    ●    │      │    ●    │     │    ●    │     │    ●    │          │
+│  │   ┌┘    │      │   └─┐    │     │   ┌┐    │     │   └─┐    │          │
+│  │   │     │      │   │     │     │   │     │     │   │     │          │
+│  │  ╱ ╲    │      │  ╱ ╲    │     │  ╱ ╲    │     │  ╱ ╲    │          │
+│  │  │ │    │      │  │ │    │     │  │ │    │     │  │ │    │          │
+│  │  ●─●    │      │  ●─●    │     │  ●─●    │     │  ●─●    │          │
+│  └─────────┘      └─────────┘     └─────────┘     └─────────┘          │
+│   стопа вниз      коліно зігнуте    нога в повітрі   коліно випрямлене  │
+│   п'ята вниз      таз опущений     прохід          п'ята вгорі         │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Graph Editor – тонке налаштування анімації</h3>
+            <p><strong>Graph Editor</strong> – це редактор графіків, який дозволяє редагувати інтерполяцію між ключовими кадрами. Тут можна змінювати швидкість руху, додавати ease in/out, циклічність.</p>
+
+            <div class="tip-box">
+                <strong>💡 Поради для анімації:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Використовуйте <strong>Cycles Modifier</strong> в Graph Editor для повторюваних анімацій (ходьба, біг)</li>
+                    <li>Додавайте <strong>Ease In/Out</strong> (S-curve) для більш природних рухів</li>
+                    <li>Використовуйте <strong>Auto Keyframe</strong> (кнопка з червоним колом) для автоматичного додавання ключових кадрів</li>
+                    <li>Для плавних рухів камери використовуйте <strong>Interpolation Mode → Bezier</strong></li>
+                </ul>
+            </div>
+
+            <!-- Клавіші швидкого доступу -->
+            <h2>⌨️ Клавіші швидкого доступу для риггінгу та анімації</h2>
+            
+            <table class="shortcut-table">
+                <tr><td><code>Shift + A → Armature</code></td><td>Додати арматуру</td>
+                <tr>
+                <tr><td><code>E</code> (в Edit Mode арматури)</td><td>Екструдувати кістку</td>
+                </tr>
+                <tr><td><code>Ctrl + P</code></td><td>Встановити батьківський зв'язок</td>
+                </tr>
+                <tr><td><code>Ctrl + Tab</code></td><td>Переключитися між режимами (Pose/Edit/Weight Paint)</td>
+                </tr>
+                <tr><td><code>I</code> (в Pose Mode)</td><td>Вставити ключовий кадр</td>
+                </tr>
+                <tr><td><code>Alt + I</code></td><td>Видалити ключові кадри</td>
+                </tr>
+                <tr><td><code>Shift + E</code></td><td>Додати циклічність (Graph Editor)</td>
+                </tr>
+                <tr><td><code>T</code> (в Graph Editor)</td><td>Змінити тип інтерполяції</td>
+                </tr>
+                <tr><td><code>M</code></td><td>Віддзеркалити кістки (X-axis)</td>
+                </tr>
+                <tr><td><code>Ctrl + R</code></td><td>Віддзеркалити позу (Pose Mode)</td>
+                </tr>
+            </table>
+
+            <!-- Практичні завдання модуля -->
+            <h2>✏️ Практичні завдання до модуля</h2>
+            
+            <div class="exercise-box">
+                <h3>📝 Завдання 1: Створення арматури</h3>
+                <p><strong>Створіть арматуру для простого персонажа</strong> (або використайте готову модель).</p>
+                <ul>
+                    <li>Створіть скелет з 10+ кісток (таз, хребет, ноги, руки, голова)</li>
+                    <li>Встановіть батьківські зв'язки</li>
+                    <li>Виконайте Auto Weights для прив'язки моделі</li>
+                    <li>Перевірте деформацію в Pose Mode</li>
+                </ul>
+                <p><a href="../practice/labs.html#lab5" style="color: var(--primary-color);">Детальна лабораторна робота →</a></p>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 2: Налаштування IK</h3>
+                <p><strong>Додайте IK констрейнти</strong> для ніг персонажа.</p>
+                <ul>
+                    <li>Створіть IK для кожної ноги (Chain Length = 2)</li>
+                    <li>Додайте Pole Targets для контролю колін</li>
+                    <li>Переконайтесь, що стопа залишається на місці при русі тазу</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 3: Анімація ходьби</h3>
+                <p><strong>Створіть циклічну анімацію ходьби</strong> для персонажа.</p>
+                <ul>
+                    <li>Створіть 4 основні пози (Contact, Down, Pass, Up)</li>
+                    <li>Додайте ключові кадри для кожної пози</li>
+                    <li>Налаштуйте криві в Graph Editor</li>
+                    <li>Додайте Cycles Modifier для повторення</li>
+                    <li>Експортуйте анімацію у відео (MP4)</li>
+                </ul>
+            </div>
+
+            <!-- Типові помилки -->
+            <h2>⚠️ Часті помилки в риггінгу та анімації</h2>
+            
+            <div class="warning-box">
+                <strong>❌ Помилка 1:</strong> Неправильна орієнтація кісток (кістки дивляться в інший бік)<br>
+                <strong>✅ Рішення:</strong> В Edit Mode виділіть кістку → <code>Ctrl + R</code> (повернути) або <code>Ctrl + N</code> (перерахувати напрямок).
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 2:</strong> Артефакти деформації через погані ваги<br>
+                <strong>✅ Рішення:</strong> Використовуйте Weight Paint режим для ручного виправлення. Червоний = 100% вплив, синій = 0%.
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 3:</strong> "Розтягнуті" суглоби при IK<br>
+                <strong>✅ Рішення:</strong> Додайте обмеження на кути обертання (Rotation Limits) в Bone Properties → Inverse Kinematics → Limit Rotation.
+            </div>
+
+            <div class="warning-box">
+                <strong>❌ Помилка 4:</strong> Різка, нереалістична анімація<br>
+                <strong>✅ Рішення:</strong> В Graph Editor змініть Interpolation з Linear на Bezier. Додайте Ease In/Out для плавних початку та кінця руху.
+            </div>
+
+            <!-- Ключові поняття модуля -->
+            <h2>🔑 Ключові поняття модуля</h2>
+            <ul>
+                <li><strong>Риггінг (Rigging)</strong> – створення скелетної структури для анімації</li>
+                <li><strong>Арматура (Armature)</strong> – набір кісток (Bones)</li>
+                <li><strong>Weight Painting</strong> – призначення ваг впливу кісток на вершини</li>
+                <li><strong>FK (Forward Kinematics)</strong> – пряма кінематика</li>
+                <li><strong>IK (Inverse Kinematics)</strong> – зворотна кінематика</li>
+                <li><strong>Pole Target</strong> – контролер напрямку коліна/ліктя в IK</li>
+                <li><strong>Keyframe (Ключовий кадр)</strong> – кадр з заданими параметрами</li>
+                <li><strong>Walk Cycle</strong> – циклічна анімація ходьби</li>
+                <li><strong>Graph Editor</strong> – редактор графіків інтерполяції</li>
+            </ul>
+
+            <!-- Навігація по уроку -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../theory/04_sculpting.html" style="color: var(--primary-color);">← Модуль 4: Скульптинг</a>
+                <a href="../theory/06_lighting.html" style="color: var(--primary-color);">Модуль 6: Освітлення →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 # 🎨 3D Моделювання: Основи (поглиблений курс)
 
+Автор: Вареник Марина
+
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Blender](https://img.shields.io/badge/Blender-3.6%2B-orange?logo=blender)](https://www.blender.org/)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-success?logo=github)](https://yourusername.github.io/3d-modeling-advanced/)
@@ -7,6 +9,8 @@
 ## 📖 Про курс
 
 Цей навчальний курс розроблено для **поглибленого вивчення 3D моделювання** учнями 10-11 класів, які вже володіють базовими навичками роботи в Blender. Курс розрахований на **20 уроків** (академічних годин) і охоплює професійні техніки моделювання, текстурування, скульптингу, анімації та рендерингу.
+
+
 
 > 🎯 **Мета курсу:** Розвинути системне розуміння професійного 3D-моделювання через поглиблене вивчення топології, процедурної генерації, скульптингу, нодів матеріалів, анімації та рендерингу, використовуючи Blender.
 

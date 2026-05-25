@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Модуль 1: Топологія та полігональне моделювання - поглиблений курс 3D моделювання в Blender">
+    <title>Модуль 1: Топологія та полігональне моделювання | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Додаткові стилі для навчального контенту */
+        .topology-diagram {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .ascii-art {
+            background: #0d1117;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #c9d1d9;
+            margin: 1rem 0;
+        }
+        .modifier-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .modifier-table th, .modifier-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .modifier-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .exercise-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .video-placeholder {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .key-point {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link active">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація модулями -->
+            <div class="nav-modules">
+                <a href="../theory/01_topology.html" class="nav-module-link active">01 Топологія</a>
+                <a href="../theory/02_uv_mapping.html" class="nav-module-link">02 UV мапінг</a>
+                <a href="../theory/03_materials.html" class="nav-module-link">03 Матеріали</a>
+                <a href="../theory/04_sculpting.html" class="nav-module-link">04 Скульптинг</a>
+                <a href="../theory/05_rigging.html" class="nav-module-link">05 Риггінг</a>
+                <a href="../theory/06_lighting.html" class="nav-module-link">06 Освітлення</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+            </div>
+
+            <h1>📐 Модуль 1: Топологія та полігональне моделювання</h1>
+            <p class="lead">Цей модуль складається з 5 уроків і присвячений фундаментальним принципам правильної топології та професійним технікам полігонального моделювання.</p>
+
+            <div class="video-placeholder">
+                <span style="font-size: 3rem;">🎥</span>
+                <p style="margin-top: 0.5rem;">Відеовступ до модуля (рекомендовано переглянути перед початком)</p>
+                <small>Посилання на відео буде доступне в онлайн-версії курсу</small>
+            </div>
+
+            <!-- Урок 1 -->
+            <h2>📖 Урок 1. Анатомія полігону: вершини, ребра, грані, нормалі</h2>
+            
+            <h3>Основні поняття</h3>
+            <p>3D-модель складається з трьох базових елементів, які разом утворюють полігональну сітку (mesh):</p>
+            
+            <div class="ascii-art">
+                ┌─────────────────────────────────────────────────────────┐
+                │                                                         │
+                │    Вершина (Vertex)          Ребро (Edge)              │
+                │        ● ────────────────────────●                     │
+                │        │                                               │
+                │        │                    Грань (Face)               │
+                │        │                    ┌───────┐                  │
+                │        │                    │       │                  │
+                │        │                    │   ■   │                  │
+                │        │                    │       │                  │
+                │        └────────────────────┘───────┘                  │
+                │                                                         │
+                └─────────────────────────────────────────────────────────┘
+            </div>
+
+            <table class="modifier-table">
+                <thead>
+                    <tr><th>Елемент</th><th>Опис</th><th>Клавіші в Edit Mode</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Vertex (Вершина)</strong></td><td>Точка в 3D-просторі з координатами X,Y,Z. Найменший будівельний блок.</td><td><code>Ctrl + Click</code> – створити вершину<br><code>G</code> – перемістити</td></tr>
+                    <tr><td><strong>Edge (Ребро)</strong></td><td>Лінія, що з'єднує дві вершини.</td><td><code>F</code> – створити ребро між вершинами<br><code>Ctrl + E</code> – меню ребер</td></tr>
+                    <tr><td><strong>Face (Грань/Полігон)</strong></td><td>Поверхня, обмежена ребрами (трикутник або чотирикутник).</td><td><code>F</code> – створити грань<br><code>I</code> – Inset</td></tr>
+                    <tr><td><strong>Normal (Нормаль)</strong></td><td>Вектор, перпендикулярний до поверхні. Визначає, як світло відбивається.</td><td><code>Shift + N</code> – перерахувати нормалі<br><code>Alt + N</code> – меню нормалей</td></tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Увімкніть відображення нормалей у Viewport Overlays → Normals, щоб бачити напрямок кожної грані. Синій колір = правильний напрямок (назовні), червоний = всередину.
+            </div>
+
+            <!-- Урок 2 -->
+            <h2>🔄 Урок 2. Топологія для деформації: Edge Loops та правильна структура</h2>
+            
+            <h3>Що таке правильна топологія?</h3>
+            <p>Правильна топологія – це організація полігональної сітки, яка забезпечує коректну деформацію під час анімації та згладжування. Основне правило: <strong>використовуйте чотирикутники (quads), уникайте трикутників (tris) та багатокутників (N-gons)</strong> там, де модель буде деформуватися.</p>
+
+            <div class="ascii-art">
+                ПРАВИЛЬНА ТОПОЛОГІЯ              НЕПРАВИЛЬНА ТОПОЛОГІЯ
+                ┌─────────────────┐              ┌─────────────────┐
+                │  ■   ■   ■   ■  │              │  ■   ■   ■   ■  │
+                │   ╱│╲   ╱│╲     │              │   ╱│╲   ╱│╲     │
+                │  ■─■─■─■─■─■    │              │  ■─■─■─■─■─■    │
+                │   ╲│╱   ╲│╱     │              │   ╲│╱   ╲│╱     │
+                │  ■   ■   ■   ■  │              │  ■   ■   ■   ■  │
+                │                  │              │      △          │
+                │  Рівномірні       │              │  Трикутники     │
+                │  чотирикутники    │              │  та N-gons      │
+                └─────────────────┘              └─────────────────┘
+            </div>
+
+            <h3>Edge Loops (Петлі ребер)</h3>
+            <p>Edge Loop – це послідовність ребер, що йдуть вздовж поверхні моделі, де кожне наступне ребро з'єднується з попереднім через вершини. Вони критично важливі для:</p>
+            <ul>
+                <li>Деформації обличчя (очиці, рот)</li>
+                <li>Згинання кінцівок (лікті, коліна)</li>
+                <li>Додавання деталей без порушення структури</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Використовуйте <code>Ctrl + R</code> для створення Loop Cuts. Це найшвидший спосіб додати деталізацію, не порушуючи топологію.
+            </div>
+
+            <!-- Урок 3 -->
+            <h2>⚙️ Урок 3. Модифікатори: Mirror, Subdivision Surface, Solidify</h2>
+            
+            <h3>Модифікатори як non-destructive інструменти</h3>
+            <p>Модифікатори – це інструменти, які змінюють об'єкт без редагування його базової геометрії. Їх можна додавати, видаляти, змінювати порядок – це дає гнучкість у роботі.</p>
+
+            <table class="modifier-table">
+                <thead><tr><th>Модифікатор</th><th>Призначення</th><th>Типові налаштування</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Mirror</strong></td><td>Дзеркальне відображення по осі X, Y або Z. Економить час при моделюванні симетричних об'єктів.</td><td>Axis: X (для персонажів)<br>Merge: включити<br>Clipping: включити</td></tr>
+                    <tr><td><strong>Subdivision Surface</strong></td><td>Згладжує mesh шляхом поділу граней та усереднення позицій вершин.</td><td>Levels Viewport: 2<br>Levels Render: 3<br>Optimal Display: увімкнути</td></tr>
+                    <tr><td><strong>Solidify</strong></td><td>Додає товщину плоским поверхням.</td><td>Thickness: 0.05-0.1<br>Offset: 0 або 1</td></tr>
+                </tbody>
+            </table>
+
+            <div class="ascii-art">
+                ┌─────────────────────────────────────────────────────────────────┐
+                │  SUBDIVISION SURFACE В ДІЇ                                     │
+                │                                                                 │
+                │   Початковий куб         1 рівень              2 рівні          │
+                │   ┌─────┐               ┌─────┐               ◯                 │
+                │   │     │               │╲   ╱│              ╱│╲                │
+                │   │  ■  │      →        │ ╲ ╱ │       →     ■─■─■               │
+                │   │     │               │  ╳  │              ╲│╱                │
+                │   └─────┘               │ ╱ ╲ │               ◯                 │
+                │                         │╱   ╲│                                 │
+                │   (Cube)                (Beveled)            (Sphere-like)      │
+                └─────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <!-- Урок 4 -->
+            <h2>🔧 Урок 4. Модифікатори: Array, Boolean, Bevel</h2>
+            
+            <table class="modifier-table">
+                <thead><tr><th>Модифікатор</th><th>Призначення</th><th>Застосування</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Array</strong></td><td>Створює копії об'єкта в лінійному, круговому або сітчастому порядку.</td><td>Паркани, колони, ґрати, ряди об'єктів</td></tr>
+                    <tr><td><strong>Boolean</strong></td><td>Логічні операції: Union (об'єднання), Difference (різниця), Intersect (перетин).</td><td>Створення отворів, з'єднання об'єктів</td></tr>
+                    <tr><td><strong>Bevel</strong></td><td>Скошує гострі кути, додаючи фаски.</td><td>Пом'якшення країв для реалістичності</td></tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ Важливо:</strong> Модифікатор Boolean може створювати проблеми з топологією (трикутники, N-gons). Після застосування Boolean завжди перевіряйте та виправляйте топологію вручну!
+            </div>
+
+            <div class="ascii-art">
+                ┌─────────────────────────────────────────────────────────────────┐
+                │  ARRAY MODIFIER ПРИКЛАД                                         │
+                │                                                                 │
+                │   Об'єкт          Array (Count=5, Constant Offset)              │
+                │   ┌───┐          ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐                │
+                │   │ ■ │          │ ■ │ │ ■ │ │ ■ │ │ ■ │ │ ■ │                │
+                │   └───┘          └───┘ └───┘ └───┘ └───┘ └───┘                │
+                │                                                                 │
+                │   BOOLEAN MODIFIER (Difference)                                 │
+                │   ┌─────┐        ┌─────┐        ┌─────┐                        │
+                │   │ ███ │   -    │  ○  │   =    │ █ █ │ (отвір)               │
+                │   │ ███ │        │     │        │     │                        │
+                │   └─────┘        └─────┘        └─────┘                        │
+                │   (Cube)         (Cylinder)      (Cube with hole)              │
+                └─────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <!-- Урок 5 -->
+            <h2>🔄 Урок 5. Ретопологія вручну</h2>
+            
+            <h3>Що таке ретопологія і коли вона потрібна?</h3>
+            <p>Ретопологія – це процес створення чистої, оптимізованої полігональної сітки поверх скульптингу з високою деталізацією. Вона необхідна для:</p>
+            <ul>
+                <li><strong>Анімації</strong> – чиста топологія забезпечує правильну деформацію</li>
+                <li><strong>Оптимізації</strong> – зменшення кількості полігонів для ігор</li>
+                <li><strong>UV-розгортки</strong> – на чистій топології легше створювати шви</li>
+                <li><strong>Baking нормалей</strong> – перенесення деталей з high-poly на low-poly</li>
+            </ul>
+
+            <div class="ascii-art">
+                ЕТАПИ РЕТОПОЛОГІЇ:
+                
+                Етап 1: High-poly скульптинг    Етап 2: Low-poly сітка (груба)
+                ┌─────────────────┐            ┌─────────────────┐
+                │    ╱╲            │            │    ┌─┐          │
+                │   ╱  ╲   деталі  │      →     │   ╱│ │╲         │
+                │  ╱────╲          │            │  ─┴─┴─┴─        │
+                │ ╱      ╲         │            │   спрощена      │
+                └─────────────────┘            └─────────────────┘
+                
+                Етап 3: Shrinkwrap проєкція    Етап 4: Чиста топологія
+                ┌─────────────────┐            ┌─────────────────┐
+                │    ┌───┐        │            │    ┌───┐        │
+                │   ╱│   │╲       │      →     │   ╱│   │╲       │
+                │  ─┴┼───┼┴─      │            │  ─┴┼───┼┴─      │
+                │    └───┘        │            │    └───┘        │
+                │  прилипла сітка  │            │  quads, edge    │
+                └─────────────────┘            │  loops          │
+                                               └─────────────────┘
+            </div>
+
+            <h3>Інструменти для ретопології в Blender</h3>
+            <ul>
+                <li><strong>Shrinkwrap Modifier</strong> – прилипання нової сітки до high-poly моделі</li>
+                <li><strong>Poly Build Tool</strong> – ручне створення полігонів (Shift + R)</li>
+                <li><strong>BSurfaces Addon</strong> – створення сітки по кривих</li>
+                <li><strong>Snapping (прив'язка)</strong> – Face Project + Align Rotation to Target</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Поради для ретопології:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Почніть з найбільш критичних зон (обличчя, суглоби)</li>
+                    <li>Дотримуйтесь анатомічних ліній (edge loops навколо очей, рота)</li>
+                    <li>Використовуйте симетрію (X-axis mirror), якщо модель симетрична</li>
+                    <li>Перевіряйте щільність полігонів – більше деталей потребують більше полігонів</li>
+                </ul>
+            </div>
+
+            <!-- Практичні завдання модуля -->
+            <h2>✏️ Практичні завдання до модуля</h2>
+            
+            <div class="exercise-box">
+                <h3>📝 Завдання 1: Створення простої моделі з Mirror</h3>
+                <p><strong>Створіть модель меча або сокири</strong> з використанням модифікатора Mirror.</p>
+                <ul>
+                    <li>Використовуйте Mirror по осі X</li>
+                    <li>Додайте Solidify для клинка</li>
+                    <li>Додайте мінімум 3 різних матеріали</li>
+                    <li>Зробіть рендер результату</li>
+                </ul>
+                <p><a href="../practice/labs.html#lab1" style="color: var(--primary-color);">Детальна лабораторна робота →</a></p>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 2: Моделювання з Array та Boolean</h3>
+                <p><strong>Створіть колону або паркан</strong> з використанням Array та Boolean модифікаторів.</p>
+                <ul>
+                    <li>Створіть один сегмент</li>
+                    <li>Використайте Array для повторення</li>
+                    <li>Додайте Boolean для створення отворів або з'єднань</li>
+                    <li>Застосуйте Subdivision Surface для згладжування</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 3: Ретопологія простої форми</h3>
+                <p><strong>Виконайте ретопологію простого скульптингу</strong> (наприклад, яблука або каменя).</p>
+                <ul>
+                    <li>Заскільптить просту форму</li>
+                    <li>Створіть новий об'єкт для ретопології</li>
+                    <li>Додайте Shrinkwrap modifier</li>
+                    <li>Створіть чисту сітку вручну (Poly Build)</li>
+                </ul>
+            </div>
+
+            <!-- Ключові поняття модуля -->
+            <h2>🔑 Ключові поняття модуля</h2>
+            <div class="key-point">
+                <ul>
+                    <li><strong>Топологія</strong> – структура полігональної сітки</li>
+                    <li><strong>Edge Loop</strong> – петля ребер для деформації</li>
+                    <li><strong>Pole (полюс)</strong> – вершина, де сходяться 5+ ребер</li>
+                    <li><strong>Non-destructive modeling</strong> – використання модифікаторів</li>
+                    <li><strong>Ретопологія</strong> – створення чистої сітки поверх високодеталізованої</li>
+                    <li><strong>Нормаль</strong> – вектор, перпендикулярний до поверхні</li>
+                </ul>
+            </div>
+
+            <!-- Тести для самоперевірки -->
+            <h2>📋 Тести для самоперевірки</h2>
+            <div class="tip-box">
+                <p><strong>Питання 1:</strong> Чому трикутники (tris) та N-gons вважаються поганою топологією для анімованих моделей?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Трикутники та N-gons викликають артефакти під час деформації та роботи модифікатора Subdivision Surface. Вони створюють непередбачувані складки та «шпилі» при згинанні моделі. Чотирикутники (quads) забезпечують передбачувану деформацію і краще згладжуються.</p>
+                </details>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>Питання 2:</strong> Яка різниця між застосуванням (Apply) та залишенням модифікатора в стеку?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Залишення модифікатора дозволяє повернутися до редагування параметрів будь-коли (non-destructive). Застосування модифікатора «запікає» зміни в геометрію, після чого їх не можна скасувати. Застосовуйте модифікатори лише коли впевнені, що більше не потрібно буде їх налаштовувати.</p>
+                </details>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>Питання 3:</strong> Навіщо робити ретопологію, якщо можна використовувати Dyntopo?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Dyntopo створює дуже щільну та хаотичну топологію, яка не підходить для анімації, UV-розгортки та використання в іграх. Ретопологія дозволяє отримати чисту, оптимізовану сітку з quads, яка коректно деформується та займає менше пам'яті.</p>
+                </details>
+            </div>
+
+            <!-- Навігація по уроку -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../index.html" style="color: var(--primary-color);">← На головну</a>
+                <a href="../theory/02_uv_mapping.html" style="color: var(--primary-color);">Модуль 2: UV-мапінг →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

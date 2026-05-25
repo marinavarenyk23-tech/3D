@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Поглиблений курс з 3D моделювання в Blender для учнів 10-11 класів. 20 уроків, топологія, UV, скульптинг, анімація, рендеринг.">
+    <meta name="keywords" content="3D моделювання, Blender, топологія, UV, скульптинг, анімація, навчальний курс">
+    <meta name="author" content="Ваше ПІБ">
+    <title>3D моделювання: основи | Поглиблений курс</title>
+    <link rel="stylesheet" href="styles/custom.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Головна</a></li>
+                <li><a href="#structure" class="nav-link">Структура</a></li>
+                <li><a href="#modules" class="nav-link">Модулі</a></li>
+                <li><a href="#outcomes" class="nav-link">Результати</a></li>
+                <li><a href="theory/glossary.html" class="nav-link">Глосарій</a></li>
+                <li><a href="tests/quiz_topology.html" class="nav-link">Тести</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">🎓 Поглиблений курс | 20 уроків</div>
+                <h1 class="hero-title">3D моделювання: <span class="gradient-text">основи</span></h1>
+                <p class="hero-description">
+                    Від правильної топології до професійного рендеру. 
+                    Курс для тих, хто вже знайомий з Blender і хоче вийти на новий рівень.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#modules" class="btn btn-primary">📚 Почати навчання</a>
+                    <a href="theory/01_topology.html" class="btn btn-secondary">🎯 Модуль 1</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">20</span>
+                        <span class="stat-label">уроків</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">модулів</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">практичних завдань</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="blender-icon"></div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="card-icon">🎯</div>
+                        <h3>Мета курсу</h3>
+                        <p>Розвинути системне розуміння професійного 3D-моделювання через поглиблене вивчення топології, процедурної генерації, скульптингу, нодів матеріалів, анімації та рендерингу.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="card-icon">👥</div>
+                        <h3>Для кого</h3>
+                        <p>Учні 10-11 класів та початківці 3D-художники, які вже вміють працювати в Blender на базовому рівні (навігація, примітиви, прості матеріали).</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="card-icon">🛠️</div>
+                        <h3>Інструменти</h3>
+                        <p>Blender 3.6 LTS / 4.0+, GIMP/Krita (опціонально). Всі матеріали безкоштовні та доступні онлайн.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prerequisites Section -->
+        <section class="prerequisites">
+            <div class="container">
+                <h2 class="section-title">📋 Що ви вже маєте знати</h2>
+                <div class="prereq-list">
+                    <div class="prereq-item">
+                        <span class="prereq-check">✓</span>
+                        <span>Впевнена навігація в 3D-просторі Blender</span>
+                    </div>
+                    <div class="prereq-item">
+                        <span class="prereq-check">✓</span>
+                        <span>Створення та трансформація примітивів</span>
+                    </div>
+                    <div class="prereq-item">
+                        <span class="prereq-check">✓</span>
+                        <span>Базове розуміння матеріалів</span>
+                    </div>
+                    <div class="prereq-item">
+                        <span class="prereq-check">✓</span>
+                        <span>Робота з об'єктами, edit mode, basic modifiers</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Structure Section -->
+        <section id="structure" class="structure">
+            <div class="container">
+                <h2 class="section-title">📊 Структура курсу</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">1-2</div>
+                        <div class="timeline-content">
+                            <h4>Тиждень 1-2</h4>
+                            <h3>Модуль 1: Топологія та полігональне моделювання</h3>
+                            <p>Вершини, ребра, грані, правильна топологія, модифікатори, ретопологія.</p>
+                            <span class="hours">5 уроків</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">3</div>
+                        <div class="timeline-content">
+                            <h4>Тиждень 3</h4>
+                            <h3>Модуль 2: UV-мапінг та текстурування</h3>
+                            <p>UV-розгортка, шви, растрові текстури, Texture Paint, baking.</p>
+                            <span class="hours">4 уроки</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">4</div>
+                        <div class="timeline-content">
+                            <h4>Тиждень 4</h4>
+                            <h3>Модуль 3: Матеріали та ноди</h3>
+                            <p>Principled BSDF, процедурні текстури, Node Groups.</p>
+                            <span class="hours">3 уроки</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">5</div>
+                        <div class="timeline-content">
+                            <h4>Тиждень 5</h4>
+                            <h3>Модуль 4: Скульптинг</h3>
+                            <p>Dyntopo, Remesh, альфа-брейшинг, деталізація.</p>
+                            <span class="hours">3 уроки</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">6</div>
+                        <div class="timeline-content">
+                            <h4>Тиждень 6</h4>
+                            <h3>Модуль 5: Риггінг та анімація</h3>
+                            <p>Арматура, FK/IK, keyframes, Graph Editor.</p>
+                            <span class="hours">3 уроки</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">7</div>
+                        <div class="timeline-content">
+                            <h4>Тиждень 7</h4>
+                            <h3>Модуль 6: Освітлення та рендер</h3>
+                            <p>Cycles vs Eevee, HDRI, фінальний проект.</p>
+                            <span class="hours">2 уроки</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modules Section -->
+        <section id="modules" class="modules">
+            <div class="container">
+                <h2 class="section-title">📚 Модулі курсу</h2>
+                <div class="modules-grid">
+                    <div class="module-card">
+                        <div class="module-number">01</div>
+                        <h3>Топологія та полігональне моделювання</h3>
+                        <div class="module-lessons">5 уроків</div>
+                        <ul class="module-topics">
+                            <li>Анатомія полігону: вершини, ребра, грані</li>
+                            <li>Edge loops та правильна топологія</li>
+                            <li>Модифікатори: Mirror, Subdivision, Array, Boolean</li>
+                            <li>Ретопологія та Shrinkwrap</li>
+                        </ul>
+                        <a href="theory/01_topology.html" class="btn-module">До модуля →</a>
+                    </div>
+                    <div class="module-card">
+                        <div class="module-number">02</div>
+                        <h3>UV-мапінг та текстурування</h3>
+                        <div class="module-lessons">4 уроки</div>
+                        <ul class="module-topics">
+                            <li>UV-розгортка та створення швів</li>
+                            <li>Smart UV Project</li>
+                            <li>Texture Paint та растрові текстури</li>
+                            <li>Baking normal maps</li>
+                        </ul>
+                        <a href="theory/02_uv_mapping.html" class="btn-module">До модуля →</a>
+                    </div>
+                    <div class="module-card">
+                        <div class="module-number">03</div>
+                        <h3>Матеріали та ноди</h3>
+                        <div class="module-lessons">3 уроки</div>
+                        <ul class="module-topics">
+                            <li>Principled BSDF та Shader Editor</li>
+                            <li>Процедурні текстури (Noise, Voronoi)</li>
+                            <li>Node Groups та маскування</li>
+                        </ul>
+                        <a href="theory/03_materials.html" class="btn-module">До модуля →</a>
+                    </div>
+                    <div class="module-card">
+                        <div class="module-number">04</div>
+                        <h3>Скульптинг</h3>
+                        <div class="module-lessons">3 уроки</div>
+                        <ul class="module-topics">
+                            <li>Базові брейші: Draw, Clay, Grab</li>
+                            <li>Динамічна топологія (Dyntopo)</li>
+                            <li>Альфа-брейшинг та деталізація</li>
+                        </ul>
+                        <a href="theory/04_sculpting.html" class="btn-module">До модуля →</a>
+                    </div>
+                    <div class="module-card">
+                        <div class="module-number">05</div>
+                        <h3>Риггінг та анімація</h3>
+                        <div class="module-lessons">3 уроки</div>
+                        <ul class="module-topics">
+                            <li>Створення арматури та weight painting</li>
+                            <li>Пряма та зворотна кінематика (FK/IK)</li>
+                            <li>Ключова анімація та Graph Editor</li>
+                        </ul>
+                        <a href="theory/05_rigging.html" class="btn-module">До модуля →</a>
+                    </div>
+                    <div class="module-card">
+                        <div class="module-number">06</div>
+                        <h3>Освітлення та рендер</h3>
+                        <div class="module-lessons">2 уроки</div>
+                        <ul class="module-topics">
+                            <li>Типи джерел світла та HDRI</li>
+                            <li>Cycles vs Eevee порівняння</li>
+                            <li>Композитинг та фінальний рендер</li>
+                        </ul>
+                        <a href="theory/06_lighting.html" class="btn-module">До модуля →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outcomes Section -->
+        <section id="outcomes" class="outcomes">
+            <div class="container">
+                <h2 class="section-title">🎯 Очікувані результати</h2>
+                <div class="outcomes-grid">
+                    <div class="outcome-level" data-level="remember">
+                        <div class="level-icon">🟢</div>
+                        <h3>Пам'ятати</h3>
+                        <p>Визначати ключові поняття: топологія, UV-розгортка, нормаль, риг, ключовий кадр, процедурна текстура.</p>
+                    </div>
+                    <div class="outcome-level" data-level="understand">
+                        <div class="level-icon">🔵</div>
+                        <h3>Розуміти</h3>
+                        <p>Пояснювати важливість правильної топології; описувати різницю між Cycles та Eevee.</p>
+                    </div>
+                    <div class="outcome-level" data-level="apply">
+                        <div class="level-icon">🟡</div>
+                        <h3>Застосовувати</h3>
+                        <p>Використовувати модифікатори, UV-розгортку, ретопологію, створювати прості риги.</p>
+                    </div>
+                    <div class="outcome-level" data-level="analyze">
+                        <div class="level-icon">🟠</div>
+                        <h3>Аналізувати</h3>
+                        <p>Досліджувати проблеми топології; порівнювати різні методи моделювання.</p>
+                    </div>
+                    <div class="outcome-level" data-level="evaluate">
+                        <div class="level-icon">🔴</div>
+                        <h3>Оцінювати</h3>
+                        <p>Оцінювати якість моделі за критеріями чистоти топології та оптимізації.</p>
+                    </div>
+                    <div class="outcome-level" data-level="create">
+                        <div class="level-icon">🟣</div>
+                        <h3>Створювати</h3>
+                        <p>Розробляти комплексну 3D-сцену з анімацією або процедурними матеріалами.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Project Section -->
+        <section class="final-project">
+            <div class="container">
+                <div class="project-card">
+                    <div class="project-content">
+                        <span class="project-badge">🏆 Підсумковий проект</span>
+                        <h2>Створіть власну 3D-сцену</h2>
+                        <p>Наприкінці курсу ви створите завершену 3D-роботу: персонажа, транспорт, інтер'єр або анімацію.</p>
+                        <ul class="project-requirements">
+                            <li>✅ 3D-модель середньої складності</li>
+                            <li>✅ Процедурні матеріали без зовнішніх текстур</li>
+                            <li>✅ UV-розгортка та текстурування</li>
+                            <li>✅ Проста анімація або риг</li>
+                            <li>✅ Рендер високої якості (Cycles/Eevee)</li>
+                        </ul>
+                        <a href="practice/final_project.html" class="btn btn-primary">📖 Деталі проекту</a>
+                    </div>
+                    <div class="project-icon">
+                        <span>🎨</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section class="resources">
+            <div class="container">
+                <h2 class="section-title">📖 Корисні ресурси</h2>
+                <div class="resources-grid">
+                    <div class="resource-category">
+                        <h3>📚 Офіційні</h3>
+                        <ul>
+                            <li><a href="https://www.blender.org/" target="_blank">Blender.org</a></li>
+                            <li><a href="https://docs.blender.org/manual/en/latest/" target="_blank">Blender Manual</a></li>
+                            <li><a href="https://blenderartists.org/" target="_blank">Blender Artists</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-category">
+                        <h3>🎓 Навчальні</h3>
+                        <ul>
+                            <li><a href="https://www.youtube.com/@blenderguru" target="_blank">Blender Guru</a></li>
+                            <li><a href="https://cgcookie.com/" target="_blank">CG Cookie</a></li>
+                            <li><a href="https://www.youtube.com/@RoyalSkiesLLC" target="_blank">Royal Skies</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-category">
+                        <h3>🖼️ Текстури</h3>
+                        <ul>
+                            <li><a href="https://polyhaven.com/" target="_blank">Poly Haven</a></li>
+                            <li><a href="https://ambientcg.com/" target="_blank">AmbientCG</a></li>
+                            <li><a href="https://3dtextures.me/" target="_blank">3DTextures</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <h3>3D моделювання: основи</h3>
+                        <p>Поглиблений курс для учнів 10-11 класів</p>
+                        <p class="footer-license">
+                            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+                                CC BY-NC-SA 4.0
+                            </a>
+                        </p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="theory/glossary.html">Глосарій</a>
+                        <a href="tests/assessment_rubric.html">Критерії оцінювання</a>
+                        <a href="resources/links.html">Посилання</a>
+                    </div>
+                    <div class="footer-ai">
+                        <p>🧠 Контент створено з використанням ШІ</p>
+                        <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    // Close mobile menu if open
+                    if (navMenu.classList.contains('active')) {
+                        navToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Active nav link on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

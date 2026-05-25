@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Фінальний проект курсу 3D моделювання - створення комплексної 3D-сцени">
+    <title>Фінальний проект | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .project-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .timeline-week {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        .week-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .week-number {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .rubric-table th, .rubric-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        .rubric-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+        .idea-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            transition: transform 0.2s;
+        }
+        .idea-card:hover {
+            transform: translateY(-4px);
+        }
+        .idea-card h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+        .submission-list {
+            list-style: none;
+            padding: 0;
+        }
+        .submission-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .submission-list li:before {
+            content: "📁 ";
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .rubric-table {
+                font-size: 0.85rem;
+            }
+            .week-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація модулями -->
+            <div class="nav-modules">
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+                <a href="../practice/final_project.html" class="nav-module-link active">🏆 Фінальний проект</a>
+                <a href="../tests/assessment_rubric.html" class="nav-module-link">Критерії оцінювання</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+            </div>
+
+            <h1>🏆 Фінальний проект: Комплексна 3D-сцена</h1>
+            <p class="lead">Це підсумкова робота курсу, яка об'єднує всі навички, отримані протягом 20 уроків. Ви створите повноцінну 3D-сцену – від концепції до фінального рендеру.</p>
+
+            <div class="tip-box">
+                <strong>📅 Термін виконання:</strong> 2 тижні (аудиторна робота + самостійна робота)
+                <br>
+                <strong>🎯 Максимальна кількість балів:</strong> 100
+                <br>
+                <strong>👥 Формат роботи:</strong> Індивідуальний проект
+            </div>
+
+            <!-- Вимоги до проекту -->
+            <h2>📋 Вимоги до проекту</h2>
+            
+            <h3>Обов'язкові компоненти</h3>
+            <div class="checklist">
+                <div class="checklist-item">☐ <strong>Моделювання:</strong> мінімум 10 унікальних 3D-об'єктів, створених самостійно</div>
+                <div class="checklist-item">☐ <strong>Модифікатори:</strong> використання мінімум 3 різних модифікаторів (Mirror, Subdivision, Array, Boolean, Solidify, Bevel)</div>
+                <div class="checklist-item">☐ <strong>Топологія:</strong> чисті quads, відсутність N-gons в місцях деформації</div>
+                <div class="checklist-item">☐ <strong>UV-розгортка:</strong> коректна UV-розгортка для складних об'єктів, відсутність сильного stretch</div>
+                <div class="checklist-item">☐ <strong>Матеріали:</strong> мінімум 3 різних матеріали (метал, дерево, скло, тканина, шкіра, пластик)</div>
+                <div class="checklist-item">☐ <strong>Процедурні текстури:</strong> використання процедурних текстур хоча б в одному матеріалі</div>
+                <div class="checklist-item">☐ <strong>Освітлення:</strong> мінімум 3 джерела світла або використання HDRI</div>
+                <div class="checklist-item">☐ <strong>Камера:</strong> налаштована композиція, фокусна відстань, глибина різкості</div>
+                <div class="checklist-item">☐ <strong>Рендер:</strong> фінальний рендер в 4K (3840×2160) або Full HD (1920×1080)</div>
+            </div>
+
+            <h3>Додаткові бонусні можливості (+балів)</h3>
+            <div class="checklist">
+                <div class="checklist-item">⭐ <strong>Анімація:</strong> циклічна анімація камери або об'єктів (+10 балів)</div>
+                <div class="checklist-item">⭐ <strong>Риггінг:</strong> персонаж з ригом та анімацією (+15 балів)</div>
+                <div class="checklist-item">⭐ <strong>Скульптинг:</strong> органічна модель, створена скульптингом (+10 балів)</div>
+                <div class="checklist-item">⭐ <strong>Node Group:</strong> створення власної групи нодів для матеріалу (+5 балів)</div>
+                <div class="checklist-item">⭐ <strong>Композитинг:</strong> пост-обробка рендеру в композері (+5 балів)</div>
+                <div class="checklist-item">⭐ <strong>Інтерактивність:</strong> створення 360° огляду сцени (+10 балів)</div>
+            </div>
+
+            <!-- Теми для проекту -->
+            <h2>🎨 Теми для натхнення</h2>
+            <div class="idea-card">
+                <h4>🏠 Інтер'єр кімнати в стилі кіберпанк</h4>
+                <p>Створіть деталізовану кімнату в футуристичному стилі: неонове освітлення, голографічні екрани, технологічне обладнання, мінімалістичні меблі.</p>
+                <small><strong>Ключові об'єкти:</strong> стіл, стілець, комп'ютер, лампа, вікно, плакати, килимок</small>
+            </div>
+            <div class="idea-card">
+                <h4>🧝 Персонаж фентезі з оточенням</h4>
+                <p>Створіть персонажа (ельф, лицар, маг) та його оточення: зброя, обладунки, магічні ефекти, п'єдестал, фон.</p>
+                <small><strong>Ключові об'єкти:</strong> персонаж, зброя, плащ, амулет, вівтар, магічні кристали</small>
+            </div>
+            <div class="idea-card">
+                <h4>🚀 Футуристичний космічний корабель</h4>
+                <p>Створіть деталізований космічний корабель з ангаром, двигунами, панелями, в космічному середовищі або на планеті.</p>
+                <small><strong>Ключові об'єкти:</strong> корабель, двигуни, крила, зірки, планета, астероїди</small>
+            </div>
+            <div class="idea-card">
+                <h4>🏰 Фантастичний пейзаж</h4>
+                <p>Створіть замок на скелі, оточений водою, лісом або горами. Додайте рослинність, хмари, освітлення заходу/світанку.</p>
+                <small><strong>Ключові об'єкти:</strong> замок, скелі, дерева, вода, хмари, міст</small>
+            </div>
+            <div class="idea-card">
+                <h4>🍽️ Натюрморт зі складними матеріалами</h4>
+                <p>Створіть композицію з об'єктів з різними матеріалами: скло, метал, дерево, кераміка, тканина.</p>
+                <small><strong>Ключові об'єкти:</strong> пляшка, чашка, книга, фрукти, ваза, стіл, серветка</small>
+            </div>
+            <div class="idea-card">
+                <h4>🚗 Класичний автомобіль</h4>
+                <p>Створіть модель класичного автомобіля (наприклад, Shelby Cobra, Porsche 911, VW Beetle) з деталізованим інтер'єром.</p>
+                <small><strong>Ключові об'єкти:</strong> кузов, колеса, фари, вікна, двері, салон</small>
+            </div>
+
+            <!-- План роботи -->
+            <h2>📅 План роботи над проектом</h2>
+            <div class="project-timeline">
+                <div class="timeline-week">
+                    <div class="week-header">
+                        <span class="week-number">Тиждень 1</span>
+                        <strong>📐 Концепція та блокування</strong>
+                    </div>
+                    <ul>
+                        <li>Вибір теми та створення Mood Board (дошка референсів)</li>
+                        <li>Створення скетчу сцени (папір або цифровий)</li>
+                        <li>Graybox (блокування базових форм основних об'єктів)</li>
+                        <li>Налаштування камери та базової композиції</li>
+                        <li>Затвердження концепції викладачем</li>
+                    </ul>
+                </div>
+                <div class="timeline-week">
+                    <div class="week-header">
+                        <span class="week-number">Тиждень 2</span>
+                        <strong>⚙️ Детальне моделювання</strong>
+                    </div>
+                    <ul>
+                        <li>Створення всіх основних об'єктів сцени</li>
+                        <li>Додавання дрібних деталей (пропси)</li>
+                        <li>Застосування модифікаторів (Subdivision, Mirror, Array)</li>
+                        <li>Перевірка топології (quads, нормалі)</li>
+                        <li>Проміжний звіт: скріншоти wireframe + clay render</li>
+                    </ul>
+                </div>
+                <div class="timeline-week">
+                    <div class="week-header">
+                        <span class="week-number">Тиждень 3</span>
+                        <strong>🎨 UV-розгортка та матеріали</strong>
+                    </div>
+                    <ul>
+                        <li>UV-розгортка складних об'єктів (розміщення швів, мінімізація stretch)</li>
+                        <li>Створення матеріалів (процедурних та/або растрових)</li>
+                        <li>Texture Paint (за потреби)</li>
+                        <li>Налаштування матеріалів для всіх об'єктів</li>
+                        <li>Проміжний звіт: скріншоти UV + матеріалів</li>
+                    </ul>
+                </div>
+                <div class="timeline-week">
+                    <div class="week-header">
+                        <span class="week-number">Тиждень 4</span>
+                        <strong>💡 Освітлення, рендер та презентація</strong>
+                    </div>
+                    <ul>
+                        <li>Налаштування освітлення (3+ джерела або HDRI)</li>
+                        <li>Тестові рендери (коригування матеріалів, світла)</li>
+                        <li>Фінальний рендер в 4K</li>
+                        <li>Пост-обробка (композитинг) за потреби</li>
+                        <li>Підготовка презентації проекту</li>
+                        <li>Здача проекту та захист</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Критерії оцінювання -->
+            <h2>📊 Критерії оцінювання</h2>
+            <table class="rubric-table">
+                <thead>
+                    <tr>
+                        <th>Критерій</th>
+                        <th>Макс. балів</th>
+                        <th>Опис</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Концепція та композиція</strong></td>
+                        <td>15</td>
+                        <td>Оригінальність ідеї, цілісність композиції, художнє оформлення</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Моделювання та топологія</strong></td>
+                        <td>20</td>
+                        <td>Якість моделей, правильна топологія (quads), відсутність артефактів</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UV та текстури</strong></td>
+                        <td>15</td>
+                        <td>Коректна UV-розгортка, якісні текстури/матеріали, відсутність stretch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Матеріали та шейдери</strong></td>
+                        <td>15</td>
+                        <td>Різноманітність матеріалів, використання PBR/процедурних текстур</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Освітлення</strong></td>
+                        <td>15</td>
+                        <td>Якість освітлення, настрій сцени, тіні, ефекти</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Рендер та презентація</strong></td>
+                        <td>10</td>
+                        <td>Якість фінального рендеру, чистота зображення, презентація проекту</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Дотримання дедлайнів</strong></td>
+                        <td>10</td>
+                        <td>Своєчасність здачі проміжних етапів та фінальної роботи</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Максимум: 100 балів</strong> (+ бонуси до 115)</p>
+
+            <!-- Шкала оцінювання -->
+            <h2>📈 Шкала оцінювання</h2>
+            <table class="rubric-table">
+                <thead>
+                    <tr><th>Бали</th><th>Оцінка</th><th>Рівень</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>90-100</td><td>Відмінно (A)</td><td>Професійний рівень, перевищення очікувань</td></tr>
+                    <tr><td>80-89</td><td>Добре (B)</td><td>Високий рівень, всі вимоги виконані якісно</td></tr>
+                    <tr><td>70-79</td><td>Добре (C)</td><td>Достатній рівень, основні вимоги виконані</td></tr>
+                    <tr><td>60-69</td><td>Задовільно (D)</td><td>Базовий рівень, є недоліки</td></tr>
+                    <tr><td>50-59</td><td>Задовільно (E)</td><td>Мінімальний рівень, значні недоліки</td></tr>
+                    <tr><td>&lt;50</td><td>Незадовільно (F)</td><td>Вимоги не виконані</td></tr>
+                </tbody>
+            </table>
+
+            <!-- Формат здачі -->
+            <h2>📦 Формат здачі проекту</h2>
+            <p>Створіть архів з наступною структурою:</p>
+            <div class="checklist">
+                <div class="checklist-item">📁 <strong>final_project_yourname/</strong></div>
+                <div class="checklist-item" style="margin-left: 1.5rem;">📁 <strong>renders/</strong> – фінальний рендер (PNG, 4K) + clay render + wireframe</div>
+                <div class="checklist-item" style="margin-left: 1.5rem;">📁 <strong>screenshots/</strong> – скріншоти процесу (етал моделювання, UV, матеріали)</div>
+                <div class="checklist-item" style="margin-left: 1.5rem;">📁 <strong>blend/</strong> – фінальний .blend файл</div>
+                <div class="checklist-item" style="margin-left: 1.5rem;">📁 <strong>textures/</strong> – всі використані текстури (якщо є)</div>
+                <div class="checklist-item" style="margin-left: 1.5rem;">📄 <strong>project_report.md</strong> – звіт про проект</div>
+                <div class="checklist-item" style="margin-left: 1.5rem;">📄 <strong>presentation.pdf/pptx</strong> – презентація проекту (5-7 слайдів)</div>
+            </div>
+
+            <h3>Структура звіту (project_report.md)</h3>
+            <div class="tip-box">
+                <pre style="margin: 0; background: transparent; overflow-x: auto;">
+# Фінальний проект: [Назва проекту]
+
+**Студент:** [ПІБ]
+**Дата:** [Дата здачі]
+**Тема:** [Тема проекту]
+
+## Концепція
+- Ідея проекту
+- Референси (посилання або скріншоти)
+- Стиль та настрій
+
+## Процес створення
+### Моделювання
+- Які техніки використані
+- Які модифікатори застосовані
+- Складності та рішення
+
+### UV та матеріали
+- Як виконана UV-розгортка
+- Які матеріали створені
+- Процедурні vs растрові текстури
+
+### Освітлення та рендер
+- Схема освітлення
+- Налаштування Cycles/Eevee
+- Фінальний рендер
+
+## Результати
+- Посилання на фінальний рендер
+- Час рендеру
+- Self-assessment (самооцінка за критеріями)
+
+## Висновок
+- Що нового навчилися
+- Що можна покращити
+- Чи задоволені результатом
+
+## Використані ресурси
+- Референси
+- Текстури
+- Додаткові інструменти
+                </pre>
+            </div>
+
+            <!-- Презентація -->
+            <h2>🎤 Захист проекту (презентація)</h2>
+            <ul>
+                <li><strong>Тривалість:</strong> 5-7 хвилин</li>
+                <li><strong>Структура презентації:</strong></li>
+                <ul>
+                    <li>Слайд 1: Назва проекту, автор, тема</li>
+                    <li>Слайд 2: Концепція, референси, скетч</li>
+                    <li>Слайд 3: Етапи моделювання (wireframe, clay render)</li>
+                    <li>Слайд 4: UV та матеріали (скріншоти UV, нодів)</li>
+                    <li>Слайд 5: Освітлення та фінальний рендер</li>
+                    <li>Слайд 6: Складності та рішення, висновки</li>
+                    <li>Слайд 7: (Опціонально) Анімація або 360° огляд</li>
+                </ul>
+                <li><strong>Питання від викладача та аудиторії:</strong> 3-5 хвилин</li>
+            </ul>
+
+            <!-- Поради -->
+            <h2>💡 Поради для успішного проекту</h2>
+            <div class="tip-box">
+                <strong>✅ DO (Робіть):</strong>
+                <ul>
+                    <li>Почніть з grayblock – це дозволить швидко перевірити композицію</li>
+                    <li>Зберігайте проміжні версії (File → Save Incremental, <code>Ctrl + Alt + S</code>)</li>
+                    <li>Робіть скріншоти кожного етапу – вони знадобляться для звіту</li>
+                    <li>Тестуйте рендер в малому розмірі (50% scale) перед фінальним</li>
+                    <li>Використовуйте референси – навіть професіонали їх використовують</li>
+                    <li>Просіть зворотний зв'язок у викладача та однокурсників</li>
+                </ul>
+            </div>
+            <div class="warning-box">
+                <strong>❌ DON'T (Не робіть):</strong>
+                <ul>
+                    <li>Не залишайте все на останній тиждень – моделювання займає багато часу</li>
+                    <li>Не використовуйте готові моделі з інтернету (це плагіат, проект не зарахується)</li>
+                    <li>Не ігноруйте UV-розгортку – погані UV зіпсують навіть гарну модель</li>
+                    <li>Не використовуйте занадто багато полігонів без потреби – оптимізуйте сцену</li>
+                    <li>Не забувайте про файл .blend – він має відкриватися на будь-якому комп'ютері</li>
+                </ul>
+            </div>
+
+            <!-- Ресурси для натхнення -->
+            <h2>🔗 Корисні ресурси</h2>
+            <ul>
+                <li><a href="https://www.pinterest.com/" target="_blank">Pinterest</a> – пошук референсів та ідей</li>
+                <li><a href="https://www.artstation.com/" target="_blank">ArtStation</a> – роботи професійних 3D-художників</li>
+                <li><a href="https://polyhaven.com/" target="_blank">Poly Haven</a> – безкоштовні HDRI та PBR текстури</li>
+                <li><a href="https://ambientcg.com/" target="_blank">AmbientCG</a> – безкоштовні PBR текстури</li>
+                <li><a href="https://www.youtube.com/@blenderguru" target="_blank">Blender Guru</a> – туторіали з моделювання</li>
+            </ul>
+
+            <!-- Навігація -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../practice/labs.html" style="color: var(--primary-color);">← Лабораторні роботи</a>
+                <a href="../tests/assessment_rubric.html" style="color: var(--primary-color);">Критерії оцінювання →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

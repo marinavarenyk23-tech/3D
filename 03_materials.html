@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Модуль 3: Матеріали та ноди - процедурне текстурування в Blender">
+    <title>Модуль 3: Матеріали та ноди | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .node-diagram {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .ascii-art {
+            background: #0d1117;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #c9d1d9;
+            margin: 1rem 0;
+        }
+        .material-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .material-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: transform 0.2s;
+        }
+        .material-card:hover {
+            transform: translateY(-4px);
+        }
+        .material-card h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .node-list {
+            list-style: none;
+            padding: 0;
+        }
+        .node-list li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .exercise-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .param-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .param-table td:first-child {
+            font-weight: 600;
+            width: 35%;
+        }
+        @media (max-width: 768px) {
+            .material-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link active">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація модулями -->
+            <div class="nav-modules">
+                <a href="../theory/01_topology.html" class="nav-module-link">01 Топологія</a>
+                <a href="../theory/02_uv_mapping.html" class="nav-module-link">02 UV мапінг</a>
+                <a href="../theory/03_materials.html" class="nav-module-link active">03 Матеріали</a>
+                <a href="../theory/04_sculpting.html" class="nav-module-link">04 Скульптинг</a>
+                <a href="../theory/05_rigging.html" class="nav-module-link">05 Риггінг</a>
+                <a href="../theory/06_lighting.html" class="nav-module-link">06 Освітлення</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+            </div>
+
+            <h1>✨ Модуль 3: Матеріали та ноди</h1>
+            <p class="lead">Цей модуль складається з 3 уроків і присвячений створенню фотореалістичних та стилізованих матеріалів за допомогою нодової системи Blender.</p>
+
+            <!-- Урок 1 -->
+            <h2>🎨 Урок 1. Вступ до нодів: Principled BSDF</h2>
+            
+            <h3>Що таке нодова система?</h3>
+            <p><strong>Ноди (Nodes)</strong> – це візуальне програмування матеріалів в Blender. Кожен нод виконує певну функцію (колір, текстура, математика), а з'єднання між ними створюють складні матеріали.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  БАЗОВА СТРУКТУРА НОДОВОГО ДЕРЕВА                                        │
+│                                                                         │
+│  ┌─────────────┐      ┌─────────────────┐      ┌──────────────────┐   │
+│  │ Texture     │      │                 │      │ Material         │   │
+│  │ Coordinate  │─────▶│ Mapping         │─────▶│ Output           │   │
+│  └─────────────┘      └─────────────────┘      └──────────────────┘   │
+│         │                     │                         ▲              │
+│         │                     ▼                         │              │
+│         │              ┌─────────────────┐             │              │
+│         │              │ Noise Texture   │             │              │
+│         │              └─────────────────┘             │              │
+│         │                     │                         │              │
+│         │                     ▼                         │              │
+│         │              ┌─────────────────┐      ┌──────────────────┐   │
+│         └─────────────▶│ Principled BSDF │─────▶│                  │   │
+│                        └─────────────────┘      │ Material Output  │   │
+│                                                 └──────────────────┘   │
+│                                                                         │
+│  (спрощена схема – ноди з'єднуються для створення матеріалу)            │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Principled BSDF – універсальний шейдер</h3>
+            <p><strong>Principled BSDF</strong> – це головний шейдер Blender, який об'єднує більшість параметрів матеріалів в одному ноді. Він заснований на Disney Principled BRDF і підходить для створення будь-яких матеріалів – від металу до шкіри, від пластику до скла.</p>
+
+            <table class="param-table">
+                <tr><td><strong>Base Color</strong></td><td>Основний колір матеріалу. Для металу – колір відбиття, для діелектрика – дифузний колір.</td></tr>
+                <tr><td><strong>Metallic</strong></td><td>0 = діелектрик (пластик, дерево, камінь), 1 = метал. Не використовуйте проміжні значення для реалістичних матеріалів!</td></tr>
+                <tr><td><strong>Roughness</strong></td><td>Шорсткість поверхні. 0 = дзеркальний блиск, 1 = матова поверхня.</td></tr>
+                <tr><td><strong>IOR (Index of Refraction)</strong></td><td>Показник заломлення (1.45 для скла, 1.33 для води, 2.42 для алмазу).</td></tr>
+                <tr><td><strong>Alpha</strong></td><td>Прозорість (0 = повністю прозорий, 1 = непрозорий).</td></tr>
+                <tr><td><strong>Subsurface Scattering</strong></td><td>Підповерхневе розсіювання – ефект для шкіри, воску, молока.</td></tr>
+                <tr><td><strong>Emission Strength</strong></td><td>Сила світіння матеріалу (для ламп, екранів, магічних ефектів).</td></tr>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Для більшості реалістичних матеріалів використовуйте значення Metallic тільки 0 або 1. Проміжні значення мають сенс лише для спеціальних ефектів (наприклад, брудний метал).
+            </div>
+
+            <!-- Урок 2 -->
+            <h2>🌀 Урок 2. Процедурні текстури</h2>
+            
+            <h3>Що таке процедурні текстури?</h3>
+            <p><strong>Процедурні текстури</strong> – це текстури, згенеровані математичними алгоритмами, а не растровими зображеннями. Їх переваги: не мають роздільної здатності, легко масштабуються, не займають місця на диску, легко анімуються.</p>
+
+            <div class="material-cards">
+                <div class="material-card">
+                    <h3>🌊 Noise Texture</h3>
+                    <p>Генерує шум Перліна – найуніверсальніша процедурна текстура. Основа для створення хмар, каменю, піску, металу.</p>
+                    <ul class="node-list">
+                        <li>Scale – масштаб шуму</li>
+                        <li>Detail – рівень деталізації</li>
+                        <li>Roughness – шорсткість шуму</li>
+                    </ul>
+                </div>
+                <div class="material-card">
+                    <h3>🧩 Voronoi Texture</h3>
+                    <p>Створює візерунок із комірок на основі діаграми Вороного. Ідеально для панцирів, шкіри рептилій, губок, кристалів.</p>
+                    <ul class="node-list">
+                        <li>Scale – розмір комірок</li>
+                        <li>Feature – Distance to Edge (для тріщин)</li>
+                        <li>Randomness – випадковість форм</li>
+                    </ul>
+                </div>
+                <div class="material-card">
+                    <h3>⛰️ Musgrave Texture</h3>
+                    <p>Фрактальна текстура для створення мармуру, тріщин, жил, гірських порід, деревних кілець.</p>
+                    <ul class="node-list">
+                        <li>Scale – масштаб</li>
+                        <li>Detail – деталізація</li>
+                        <li>Dimension – фрактальна розмірність</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ПРИКЛАД: ПРОЦЕДУРНА ТЕКСТУРА МЕТАЛУ З ІРЖЕЮ                             │
+│                                                                         │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐               │
+│  │ Noise       │     │ ColorRamp   │     │ Mix         │               │
+│  │ Texture     │────▶│ (чорний-    │────▶│ (Faktor)    │               │
+│  │ (подряпини) │     │  білий)     │     │             │               │
+│  └─────────────┘     └─────────────┘     └──────┬──────┘               │
+│                                                  │                       │
+│  ┌─────────────┐     ┌─────────────┐            │                       │
+│  │ Musgrave    │     │ ColorRamp   │            ▼                       │
+│  │ Texture     │────▶│ (чорний-    │     ┌─────────────┐               │
+│  │ (іржа)      │     │  помаранч)  │────▶│ Mix Shader  │               │
+│  └─────────────┘     └─────────────┘     └──────┬──────┘               │
+│                                                  │                       │
+│  ┌─────────────┐                                │                       │
+│  │ Principled  │     ┌─────────────┐            │                       │
+│  │ BSDF (метал)│────▶│ Mix Shader  │◀───────────┘                       │
+│  │ Metal=1     │     └──────┬──────┘                                    │
+│  └─────────────┘            │                                           │
+│                             ▼                                           │
+│                      ┌─────────────┐                                    │
+│                      │ Material    │                                    │
+│                      │ Output      │                                    │
+│                      └─────────────┘                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>ColorRamp – створення масок та градієнтів</h3>
+            <p>ColorRamp – один з найважливіших нодів. Він відображає вхідні значення (від 0 до 1) на задану колірну шкалу. Використовується для:</p>
+            <ul>
+                <li>Створення масок (чорно-білі переходи)</li>
+                <li>Градієнтних переходів кольорів</li>
+                <li>Контролю розподілу матеріалів (де більше іржі, де менше)</li>
+                <li>Стилізації (cell shading, cartoon)</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Порада:</strong> Використовуйте Math nodes (Multiply, Add, Power) для комбінування текстур та створення складних масок. Наприклад, Multiply двох текстур дасть область перетину.
+            </div>
+
+            <!-- Урок 3 -->
+            <h2>🔧 Урок 3. Розширені ноди: Masking, Fresnel та Node Groups</h2>
+            
+            <h3>Fresnel – ефект кута огляду</h3>
+            <p><strong>Fresnel</strong> – оптичний ефект, при якому відбиття стає сильнішим під гострими кутами огляду. Використовується для створення реалістичних матеріалів: скло, вода, лаковані поверхні, тканина.</p>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  FRESNEL ЕФЕКТ В ДІЇ                                                      │
+│                                                                         │
+│  Погляд прямо (0°)        Погляд під кутом (60°)      Погляд збоку (80°)│
+│  ┌─────────────┐          ┌─────────────┐           ┌─────────────┐    │
+│  │             │          │  ░░░░░░░    │           │  ███████    │    │
+│  │      ●      │          │  ░░░●░░░    │           │  ███●███    │    │
+│  │   слабке    │    →     │  ░░░░░░░    │     →     │  ███████    │    │
+│  │   відбиття  │          │  сильне     │           │  дуже       │    │
+│  │             │          │  відбиття   │           │  сильне     │    │
+│  └─────────────┘          └─────────────┘           └─────────────┘    │
+│                                                                         │
+│  Layer Weight node: Fresnel вихід (IOR за замовчуванням = 1.45 – скло)  │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h3>Node Groups – створення власних блоків</h3>
+            <p><strong>Node Groups</strong> – це спосіб згрупувати набір нодів в один блок для повторного використання. Це економить час і робить нодове дерево більш організованим.</p>
+
+            <div class="tip-box">
+                <strong>💌 Як створити Node Group:</strong>
+                <ol style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Виділіть ноди, які хочете згрупувати</li>
+                    <li>Натисніть <code>Ctrl + G</code></li>
+                    <li>У Group Input додайте входи (піни) для параметрів</li>
+                    <li>У Group Output виведіть результат</li>
+                    <li>Збережіть групу як asset (Shift + Ctrl + G)</li>
+                </ol>
+            </div>
+
+            <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  NODE GROUP ПРИКЛАД: "Процедурна іржа"                                   │
+│                                                                         │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │  ████████████████████████████████████████████████████████████████  │  │
+│  │  █  ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐      █  │  │
+│  │  █  │Group    │   │ Noise   │   │ Color   │   │ Mix     │      █  │  │
+│  │  █  │Input    │──▶│ Texture │──▶│ Ramp    │──▶│ Shader  │──┐   █  │  │
+│  │  █  │         │   └─────────┘   └─────────┘   └─────────┘  │   █  │  │
+│  │  █  │• Scale  │   ┌─────────┐   ┌─────────┐               │   █  │  │
+│  │  █  │• Detail │   │ Musgrave│   │ Color   │               │   █  │  │
+│  │  █  │         │──▶│ Texture │──▶│ Ramp    │───────────────┘   █  │  │
+│  │  █  └─────────┘   └─────────┘   └─────────┘                  │   █  │  │
+│  │  █                                                           │   █  │  │
+│  │  █  ┌─────────┐   ┌─────────┐                               │   █  │  │
+│  │  █  │Group    │   │ Material│                               │   █  │  │
+│  │  █  │Output   │◀──│ Output  │                               │   █  │  │
+│  │  █  └─────────┘   └─────────┘                               │   █  │  │
+│  │  ████████████████████████████████████████████████████████████████  │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│  Після створення Group використовується як один блок                    │
+└─────────────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <!-- Практичні завдання модуля -->
+            <h2>✏️ Практичні завдання до модуля</h2>
+            
+            <div class="exercise-box">
+                <h3>📝 Завдання 1: Базові матеріали</h3>
+                <p><strong>Створіть три базові матеріали</strong> з використанням тільки Principled BSDF:</p>
+                <ul>
+                    <li>Метал (золото або мідь) – Metallic=1, налаштуйте Roughness</li>
+                    <li>Дерево (лаковане) – використовуйте текстуру дерева або процедурну</li>
+                    <li>Скло – IOR=1.45, Transmission=1, Roughness=0.1</li>
+                </ul>
+                <p><a href="../practice/labs.html#lab3" style="color: var(--primary-color);">Детальна лабораторна робота →</a></p>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 2: Процедурний матеріал</h3>
+                <p><strong>Створіть складний процедурний матеріал</strong> без використання зовнішніх текстур:</p>
+                <ul>
+                    <li>Іржавий метал (метал + іржа з маскою)</li>
+                    <li>Або дерево з річними кільцями (Voronoi + ColorRamp)</li>
+                    <li>Або мармур (Musgrave + ColorRamp)</li>
+                    <li>Мінімум 10 нодів у дереві</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h3>📝 Завдання 3: Node Group</h3>
+                <p><strong>Створіть Node Group</strong> для часто використовуваного ефекту:</p>
+                <ul>
+                    <li>Наприклад, група "Процедурний метал" з параметрами</li>
+                    <li>Додайте входи: Scale, Roughness, Metallic Color</li>
+                    <li>Використайте групу в декількох матеріалах</li>
+                    <li>Збережіть групу як asset для майбутнього використання</li>
+                </ul>
+            </div>
+
+            <!-- Рецепти матеріалів -->
+            <h2>📖 Рецепти матеріалів</h2>
+            
+            <div class="material-cards">
+                <div class="material-card">
+                    <h3>🥩 Шкіра (Subsurface Scattering)</h3>
+                    <ul class="node-list">
+                        <li>Base Color: рожево-коричневий</li>
+                        <li>Subsurface: 0.2-0.5</li>
+                        <li>Subsurface Radius: 1.0, 0.5, 0.2 (RGB)</li>
+                        <li>Subsurface Color: яскравіший за Base Color</li>
+                        <li>Roughness: 0.4-0.6</li>
+                    </ul>
+                </div>
+                <div class="material-card">
+                    <h3>💎 Дорогоцінне каміння</h3>
+                    <ul class="node-list">
+                        <li>Principled BSDF → Glass BSDF</li>
+                        <li>IOR: 2.42 (алмаз), 1.76 (сапфір)</li>
+                        <li>Transmission: 1</li>
+                        <li>Roughness: 0.05-0.1</li>
+                        <li>Додайте дисперсію (Dispersion=0.02)</li>
+                    </ul>
+                </div>
+                <div class="material-card">
+                    <h3>🌊 Вода</h3>
+                    <ul class="node-list">
+                        <li>Principled BSDF → Glass BSDF</li>
+                        <li>IOR: 1.333</li>
+                        <li>Transmission: 1</li>
+                        <li>Roughness: 0.1-0.3</li>
+                        <li>Додайте хвилі через Noise Texture</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Ключові поняття модуля -->
+            <h2>🔑 Ключові поняття модуля</h2>
+            <ul>
+                <li><strong>Principled BSDF</strong> – універсальний шейдер Blender</li>
+                <li><strong>Node (нод)</strong> – візуальний блок програмування матеріалів</li>
+                <li><strong>Процедурна текстура</strong> – текстура, згенерована математично</li>
+                <li><strong>ColorRamp</strong> – створення градієнтів та масок</li>
+                <li><strong>Fresnel</strong> – ефект посилення відбиття під кутом</li>
+                <li><strong>Node Group</strong> – група нодів для повторного використання</li>
+                <li><strong>SSS (Subsurface Scattering)</strong> – підповерхневе розсіювання світла</li>
+            </ul>
+
+            <!-- Тести для самоперевірки -->
+            <h2>📋 Тести для самоперевірки</h2>
+            
+            <div class="tip-box">
+                <p><strong>Питання 1:</strong> Чому для реалістичних металів Metallic має дорівнювати 1, а не проміжним значенням?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>У фізиці матеріал або є металом (провідником), або ні (діелектриком). Проміжні значення Metallic не відповідають реальним матеріалам і створюють нереалістичний вигляд. Виняток – спецефекти (наприклад, космічні кораблі у фентезі).</p>
+                </details>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>Питання 2:</strong> Яка різниця між Roughness і Specular?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Roughness контролює, наскільки розмитими є відблиски (0 = дзеркало, 1 = матовий). Specular контролює силу дзеркальних відблисків для діелектриків (зазвичай залишається 0.5). Для металів Specular не використовується – відбиття контролюється через Base Color.</p>
+                </details>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>Питання 3:</strong> Навіщо використовувати процедурні текстури замість зображень?</p>
+                <details style="margin-top: 0.5rem;">
+                    <summary>Показати відповідь</summary>
+                    <p>Процедурні текстури не мають роздільної здатності (не пікселізуються при наближенні), легко масштабуються, не займають місця на диску, можуть бути анімовані, ідеально тайляться без швів. Основний недолік – складність створення органічних текстур (фотографічна шкіра, дерево).</p>
+                </details>
+            </div>
+
+            <!-- Навігація по уроку -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../theory/02_uv_mapping.html" style="color: var(--primary-color);">← Модуль 2: UV-мапінг</a>
+                <a href="../theory/04_sculpting.html" style="color: var(--primary-color);">Модуль 4: Скульптинг →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

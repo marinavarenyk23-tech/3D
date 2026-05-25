@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Критерії оцінювання курсу 3D моделювання - рубрики для лабораторних робіт та фінального проекту">
+    <title>Критерії оцінювання | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .rubric-section {
+            margin-bottom: 2rem;
+        }
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .rubric-table th, .rubric-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        .rubric-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            text-align: center;
+        }
+        .rubric-table td:first-child {
+            font-weight: 600;
+            background: var(--bg-secondary);
+        }
+        .level-excellent { background-color: rgba(16, 185, 129, 0.15); }
+        .level-good { background-color: rgba(59, 130, 246, 0.15); }
+        .level-satisfactory { background-color: rgba(245, 158, 11, 0.15); }
+        .level-needs { background-color: rgba(239, 68, 68, 0.15); }
+        
+        .grade-scale {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            justify-content: space-between;
+        }
+        .grade-card {
+            flex: 1;
+            min-width: 120px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .grade-letter {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .grade-range {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .grade-a { border-top: 4px solid #10b981; }
+        .grade-b { border-top: 4px solid #3b82f6; }
+        .grade-c { border-top: 4px solid #f59e0b; }
+        .grade-d { border-top: 4px solid #f97316; }
+        .grade-e { border-top: 4px solid #ef4444; }
+        .grade-f { border-top: 4px solid #6b7280; }
+        
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+        h3 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+        .feedback-form {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .feedback-field {
+            margin-bottom: 1rem;
+        }
+        .feedback-field label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .feedback-field input, .feedback-field textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+        .btn-submit {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+            .rubric-table {
+                font-size: 0.75rem;
+            }
+            .rubric-table th, .rubric-table td {
+                padding: 0.5rem;
+            }
+            .grade-scale {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Навігація -->
+            <div class="nav-modules">
+                <a href="../practice/labs.html" class="nav-module-link">Лабораторні</a>
+                <a href="../practice/final_project.html" class="nav-module-link">Фінальний проект</a>
+                <a href="../tests/assessment_rubric.html" class="nav-module-link active">📊 Критерії оцінювання</a>
+                <a href="../theory/glossary.html" class="nav-module-link">Глосарій</a>
+            </div>
+
+            <h1>📊 Критерії оцінювання курсу</h1>
+            <p class="lead">Цей документ містить детальні рубрики оцінювання для лабораторних робіт, фінального проекту та загальні критерії атестації з курсу "3D моделювання: основи".</p>
+
+            <!-- Шкала оцінювання -->
+            <h2>📈 Шкала оцінювання</h2>
+            <div class="grade-scale">
+                <div class="grade-card grade-a">
+                    <div class="grade-letter">A</div>
+                    <div class="grade-range">90-100 балів</div>
+                    <div>Відмінно</div>
+                    <small>Професійний рівень</small>
+                </div>
+                <div class="grade-card grade-b">
+                    <div class="grade-letter">B</div>
+                    <div class="grade-range">80-89 балів</div>
+                    <div>Добре</div>
+                    <small>Високий рівень</small>
+                </div>
+                <div class="grade-card grade-c">
+                    <div class="grade-letter">C</div>
+                    <div class="grade-range">70-79 балів</div>
+                    <div>Добре</div>
+                    <small>Достатній рівень</small>
+                </div>
+                <div class="grade-card grade-d">
+                    <div class="grade-letter">D</div>
+                    <div class="grade-range">60-69 балів</div>
+                    <div>Задовільно</div>
+                    <small>Базовий рівень</small>
+                </div>
+                <div class="grade-card grade-e">
+                    <div class="grade-letter">E</div>
+                    <div class="grade-range">50-59 балів</div>
+                    <div>Задовільно</div>
+                    <small>Мінімальний рівень</small>
+                </div>
+                <div class="grade-card grade-f">
+                    <div class="grade-letter">F</div>
+                    <div class="grade-range">&lt;50 балів</div>
+                    <div>Незадовільно</div>
+                    <small>Вимоги не виконані</small>
+                </div>
+            </div>
+
+            <!-- Загальна рубрика для лабораторних робіт -->
+            <h2>🧪 Загальна рубрика оцінювання лабораторних робіт</h2>
+            <p>Кожна лабораторна робота оцінюється за 50-бальною шкалою за п'ятьма критеріями.</p>
+            
+            <table class="rubric-table">
+                <thead>
+                    <tr><th>Критерій</th><th>Відмінно (10-9)</th><th>Добре (8-7)</th><th>Задовільно (6-5)</th><th>Потребує покращення (4-0)</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="level-excellent">
+                        <td>Техніка моделювання<br><small>(топологія, модифікатори)</small></td>
+                        <td>Відмінна топологія (quads), правильне використання модифікаторів, оптимізована сітка</td>
+                        <td>Добра топологія, незначні недоліки (окремі tris), модифікатори використано доцільно</td>
+                        <td>Задовільна топологія, наявні N-gons, модифікатори використано неоптимально</td>
+                        <td>Погана топологія, багато N-gons/tris, неправильне використання модифікаторів</td>
+                    </tr>
+                    <tr class="level-good">
+                        <td>UV-розгортка та текстури<br><small>(шви, stretch, якість)</small></td>
+                        <td>Чудова UV-розгортка (шви в непомітних місцях), мінімальний stretch, якісні текстури</td>
+                        <td>Добра UV-розгортка, stretch в межах норми, текстури акуратні</td>
+                        <td>Задовільна UV, помітний stretch, текстури потребують доопрацювання</td>
+                        <td>Погана UV, сильний stretch, текстури відсутні або дуже низької якості</td>
+                    </tr>
+                    <tr class="level-satisfactory">
+                        <td>Матеріали та ноди<br><small>(реалістичність, складність)</small></td>
+                        <td>Складні реалістичні матеріали, ефективне використання нодів, процедурні текстури</td>
+                        <td>Добрі матеріали, базове використання нодів, задовільна реалістичність</td>
+                        <td>Прості матеріали, мінімальне використання нодів, матеріали "пластикові"</td>
+                        <td>Дуже прості або відсутні матеріали, неправильне використання нодів</td>
+                    </tr>
+                    <tr class="level-excellent">
+                        <td>Освітлення та рендер<br><small>(композиція, якість)</small></td>
+                        <td>Чудове освітлення (3+ джерела або HDRI), ідеальна композиція, чистий рендер</td>
+                        <td>Добре освітлення, задовільна композиція, незначний шум на рендері</td>
+                        <td>Базове освітлення (1-2 джерела), композиція потребує покращення</td>
+                        <td>Погане освітлення, відсутність композиції, сильний шум</td>
+                    </tr>
+                    <tr class="level-good">
+                        <td>Загальне враження та креативність<br><small>(оригінальність, естетика)</small></td>
+                        <td>Оригінальна ідея, чудова естетика, увага до деталей, перевищення вимог</td>
+                        <td>Хороша ідея, приємний візуал, базові вимоги виконані якісно</td>
+                        <td>Ідея стандартна, естетика задовільна, вимоги виконані мінімально</td>
+                        <td>Немає оригінальності, низька якість виконання, вимоги не виконані</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>* Кожна лабораторна робота оцінюється максимум у 50 балів (по 10 балів за кожен критерій).</em></p>
+
+            <!-- Рубрика для фінального проекту -->
+            <h2>🏆 Рубрика оцінювання фінального проекту</h2>
+            <p>Фінальний проект оцінюється за 100-бальною шкалою + бонусні бали за додаткові можливості.</p>
+            
+            <table class="rubric-table">
+                <thead>
+                    <tr>
+                        <th>Критерій</th>
+                        <th>Відмінно (18-20)</th>
+                        <th>Добре (14-17)</th>
+                        <th>Задовільно (10-13)</th>
+                        <th>Потребує покращення (0-9)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="level-excellent">
+                        <td>Концепція та композиція<br><small>(15 балів)</small></td>
+                        <td>Оригінальна ідея, чудова композиція, відмінне художнє оформлення, продумана кольорова гама</td>
+                        <td>Хороша ідея, композиція вдала, але є незначні недоліки</td>
+                        <td>Ідея стандартна, композиція задовільна, є помітні огріхи</td>
+                        <td>Ідея відсутня або неоригінальна, погана композиція</td>
+                    </tr>
+                    <tr class="level-good">
+                        <td>Моделювання та топологія<br><small>(20 балів)</small></td>
+                        <td>10+ якісних моделей, чудова топологія (quads), ефективне використання модифікаторів</td>
+                        <td>8-10 моделей, добра топологія, незначні проблеми з N-gons</td>
+                        <td>5-7 моделей, задовільна топологія, помітні проблеми</td>
+                        <td>Менше 5 моделей, погана топологія, неправильне використання модифікаторів</td>
+                    </tr>
+                    <tr class="level-excellent">
+                        <td>UV та матеріали<br><small>(15 балів)</small></td>
+                        <td>Відмінна UV-розгортка для всіх складних об'єктів, 3+ різних матеріали (метал, дерево, скло), процедурні текстури</td>
+                        <td>Добра UV, 2-3 матеріали, задовільна якість</td>
+                        <td>Задовільна UV, 1-2 матеріали, низька якість</td>
+                        <td>Відсутня UV або дуже погана, менше 2 матеріалів</td>
+                    </tr>
+                    <tr class="level-satisfactory">
+                        <td>Освітлення та рендер<br><small>(15 балів)</small></td>
+                        <td>3+ джерела світла або HDRI, чудова композиція, рендер 4K, відсутність шуму</td>
+                        <td>2-3 джерела світла, рендер HD, незначний шум</td>
+                        <td>1-2 джерела світла, рендер HD, помітний шум</td>
+                        <td>1 джерело світла або відсутнє, низька якість рендеру</td>
+                    </tr>
+                    <tr class="level-good">
+                        <td>Технічна реалізація<br><small>(15 балів)</small></td>
+                        <td>Чистий .blend файл, відсутність зайвих даних, правильна організація сцени</td>
+                        <td>Добра організація, незначні технічні недоліки</td>
+                        <td>Задовільна організація, помітні технічні проблеми</td>
+                        <td>Хаотична структура, багато зайвих даних, файл не відкривається</td>
+                    </tr>
+                    <tr class="level-excellent">
+                        <td>Презентація та захист<br><small>(20 балів)</small></td>
+                        <td>Чудова презентація (структура, дизайн), якісна демонстрація, відповіді на всі запитання</td>
+                        <td>Добра презентація, задовільна демонстрація, більшість відповідей правильні</td>
+                        <td>Задовільна презентація, слабка демонстрація, проблеми з відповідями</td>
+                        <td>Погана презентація або її відсутність, невпевнені відповіді</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>🎁 Бонусні бали (до +15 до загальної оцінки):</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>⭐ Анімація (цикл ходьби або анімація камери) – до +10 балів</li>
+                    <li>⭐ Риггінг персонажа – до +10 балів</li>
+                    <li>⭐ Складні процедурні матеріали (Node Group) – до +5 балів</li>
+                    <li>⭐ Композитинг та пост-обробка – до +5 балів</li>
+                    <li>⭐ 360° огляд сцени – до +5 балів</li>
+                </ul>
+            </div>
+
+            <!-- Оцінювання за таксономією Блума -->
+            <h2>🎯 Оцінювання результатів навчання за таксономією Блума</h2>
+            <p>Протягом курсу оцінюється досягнення кожного рівня таксономії Блума:</p>
+            
+            <table class="rubric-table">
+                <thead>
+                    <tr>
+                        <th>Рівень</th>
+                        <th>Що оцінюється</th>
+                        <th>Методи оцінювання</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Пам'ятати</strong></td><td>Знання термінології, базових понять</td><td>Тести, вікторини, глосарій</td></tr>
+                    <tr><td><strong>Розуміти</strong></td><td>Пояснення концепцій, інтерпретація</td><td>Усні опитування, пояснення в звітах</td></tr>
+                    <tr><td><strong>Застосовувати</strong></td><td>Використання інструментів та технік</td><td>Лабораторні роботи, практичні завдання</td></tr>
+                    <tr><td><strong>Аналізувати</strong></td><td>Порівняння методів, дослідження проблем</td><td>Аналіз топології, порівняння матеріалів</td></tr>
+                    <tr><td><strong>Оцінювати</strong></td><td>Критика власних робіт, аргументація</td><td>Self-assessment, peer review, захист проектів</td></tr>
+                    <tr><td><strong>Створювати</strong></td><td>Оригінальні 3D-роботи</td><td>Фінальний проект, творчі завдання</td></tr>
+                </tbody>
+            </table>
+
+            <!-- Зведена таблиця балів -->
+            <h2>📊 Зведена таблиця балів</h2>
+            <table class="rubric-table">
+                <thead>
+                    <tr><th>Вид роботи</th><th>Кількість</th><th>Макс. балів за одну</th><th>Всього балів</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Лабораторна робота №1 (Топологія)</td><td>1</td><td>50</td><td>50</td></tr>
+                    <tr><td>Лабораторна робота №2 (UV та текстури)</td><td>1</td><td>50</td><td>50</td></tr>
+                    <tr><td>Лабораторна робота №3 (Матеріали)</td><td>1</td><td>50</td><td>50</td></tr>
+                    <tr><td>Лабораторна робота №4 (Скульптинг)</td><td>1</td><td>50</td><td>50</td></tr>
+                    <tr><td>Лабораторна робота №5 (Риггінг)</td><td>1</td><td>50</td><td>50</td></tr>
+                    <tr><td>Фінальний проект</td><td>1</td><td>100</td><td>100</td></tr>
+                    <tr><td>Тести та вікторини</td><td>3</td><td>20</td><td>60</td></tr>
+                    <tr><td>Активність на уроках</td><td>-</td><td>-</td><td>40</td></tr>
+                    <tr style="background: var(--bg-secondary); font-weight: 600;"><td colspan="3">ВСЬОГО</td><td>450</td></tr>
+                </tbody>
+            </table>
+
+            <!-- Форма зворотного зв'язку -->
+            <h2>📝 Форма зворотного зв'язку для студентів</h2>
+            <div class="feedback-form">
+                <form id="feedbackForm">
+                    <div class="feedback-field">
+                        <label for="studentName">Ваше ім'я (опціонально)</label>
+                        <input type="text" id="studentName" placeholder="Ім'я, прізвище">
+                    </div>
+                    <div class="feedback-field">
+                        <label for="workType">Тип роботи</label>
+                        <select id="workType" style="width: 100%; padding: 0.75rem; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary);">
+                            <option value="lab1">Лабораторна робота №1</option>
+                            <option value="lab2">Лабораторна робота №2</option>
+                            <option value="lab3">Лабораторна робота №3</option>
+                            <option value="lab4">Лабораторна робота №4</option>
+                            <option value="lab5">Лабораторна робота №5</option>
+                            <option value="final">Фінальний проект</option>
+                        </select>
+                    </div>
+                    <div class="feedback-field">
+                        <label for="selfScore">Самооцінка (0-100% або 0-50/100 балів)</label>
+                        <input type="text" id="selfScore" placeholder="Наприклад: 85% або 42/50">
+                    </div>
+                    <div class="feedback-field">
+                        <label for="selfComment">Складності та коментарі</label>
+                        <textarea id="selfComment" rows="4" placeholder="Що вийшло добре? Які були складності? Який час витратили?"></textarea>
+                    </div>
+                    <div class="feedback-field">
+                        <label for="improvements">Що можна покращити?</label>
+                        <textarea id="improvements" rows="3" placeholder="Ваші пропозиції щодо покращення роботи"></textarea>
+                    </div>
+                    <button type="button" class="btn-submit" onclick="submitFeedback()">Відправити самооцінку</button>
+                </form>
+                <p id="feedbackMessage" style="margin-top: 1rem; color: var(--primary-color);"></p>
+            </div>
+
+            <!-- Поради для отримання високої оцінки -->
+            <h2>💡 Поради для отримання високої оцінки</h2>
+            <div class="tip-box">
+                <strong>✅ Як отримати A (90-100 балів):</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Перевиконуйте базові вимоги – додавайте більше деталей, ніж мінімум</li>
+                    <li>Використовуйте процедурні текстури замість простих кольорів</li>
+                    <li>Дотримуйтесь правильної топології (quads, edge loops)</li>
+                    <li>Налаштовуйте освітлення за схемою трьох точок або використовуйте HDRI</li>
+                    <li>Робіть якісні рендери в 4K з налаштованою глибиною різкості</li>
+                    <li>Додайте бонусні можливості (анімація, риг, композитинг)</li>
+                    <li>Пишіть детальні звіти з самоаналізом</li>
+                </ul>
+            </div>
+            <div class="warning-box">
+                <strong>❌ Що знижує оцінку:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>Плагіат – використання готових моделей з інтернету (робота не зараховується)</li>
+                    <li>Несвоєчасна здача робіт (-10% за кожен день прострочення)</li>
+                    <li>Порушення вимог до формату здачі (неправильна структура архіву)</li>
+                    <li>Відсутність UV-розгортки для складних об'єктів</li>
+                    <li>Використання тільки базових кольорів без матеріалів</li>
+                    <li>Шумний рендер через низьку кількість семплів</li>
+                </ul>
+            </div>
+
+            <!-- Політика академічної доброчесності -->
+            <h2>⚖️ Політика академічної доброчесності</h2>
+            <div class="tip-box">
+                <p><strong>Дозволено:</strong></p>
+                <ul>
+                    <li>Використання туторіалів та документації для навчання</li>
+                    <li>Консультації з викладачем та однокурсниками</li>
+                    <li>Використання безкоштовних текстур та HDRI з відкритих джерел (Poly Haven, AmbientCG)</li>
+                    <li>Використання ШІ для генерації ідей, референсів та навчання</li>
+                </ul>
+                <p><strong>Заборонено:</strong></p>
+                <ul>
+                    <li>Використання готових 3D-моделей з інтернету у фінальних роботах</li>
+                    <li>Копіювання робіт інших студентів</li>
+                    <li>Використання ШІ для генерації кінцевих моделей (дозволено тільки для ідей та референсів)</li>
+                    <li>Подання однієї роботи в різні завдання</li>
+                </ul>
+            </div>
+
+            <!-- JavaScript для форми -->
+            <script>
+                function submitFeedback() {
+                    const name = document.getElementById('studentName').value;
+                    const workType = document.getElementById('workType').options[document.getElementById('workType').selectedIndex]?.text;
+                    const selfScore = document.getElementById('selfScore').value;
+                    const selfComment = document.getElementById('selfComment').value;
+                    const improvements = document.getElementById('improvements').value;
+                    
+                    let message = '';
+                    if (selfScore) message += `Самооцінка: ${selfScore}\n`;
+                    if (selfComment) message += `Коментар: ${selfComment}\n`;
+                    if (improvements) message += `Покращення: ${improvements}\n`;
+                    
+                    if (message) {
+                        document.getElementById('feedbackMessage').innerHTML = `✅ Дякуємо, ${name || 'студенте'}! Вашу самооцінку для роботи "${workType}" отримано.<br><br>📝 Ви написали:<br>${message.replace(/\n/g, '<br>')}<br><br>Зворотний зв'язок передано викладачу.`;
+                        document.getElementById('feedbackForm').reset();
+                    } else {
+                        document.getElementById('feedbackMessage').innerHTML = '⚠️ Будь ласка, заповніть хоча б одне поле для відправки.';
+                    }
+                }
+            </script>
+
+            <!-- Навігація -->
+            <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <a href="../practice/final_project.html" style="color: var(--primary-color);">← Фінальний проект</a>
+                <a href="../theory/glossary.html" style="color: var(--primary-color);">Глосарій →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5

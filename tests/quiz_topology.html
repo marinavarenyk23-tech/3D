@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Тест з топології та полігонального моделювання для курсу 3D моделювання">
+    <title>Тест: Топологія та моделювання | 3D моделювання</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .quiz-container {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .question {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .question-number {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .question-type {
+            background: var(--bg-primary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .options {
+            margin-left: 1rem;
+        }
+        .option {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        .option input {
+            cursor: pointer;
+        }
+        .feedback {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border-left: 3px solid #10b981;
+            display: block;
+        }
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border-left: 3px solid #ef4444;
+            display: block;
+        }
+        .quiz-results {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .btn-check {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        .btn-reset {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .nav-modules {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-module-link {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-module-link:hover, .nav-module-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .hint {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 1rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">3D Моделювання</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Головна</a></li>
+                <li><a href="../theory/01_topology.html" class="nav-link">Модуль 1</a></li>
+                <li><a href="../theory/02_uv_mapping.html" class="nav-link">Модуль 2</a></li>
+                <li><a href="../theory/03_materials.html" class="nav-link">Модуль 3</a></li>
+                <li><a href="../theory/04_sculpting.html" class="nav-link">Модуль 4</a></li>
+                <li><a href="../theory/05_rigging.html" class="nav-link">Модуль 5</a></li>
+                <li><a href="../theory/06_lighting.html" class="nav-link">Модуль 6</a></li>
+                <li><a href="../theory/glossary.html" class="nav-link">Глосарій</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="nav-modules">
+                <a href="../tests/quiz_topology.html" class="nav-module-link active">📝 Тест: Топологія</a>
+                <a href="../tests/quiz_uv.html" class="nav-module-link">Тест: UV-мапінг</a>
+                <a href="../tests/quiz_materials.html" class="nav-module-link">Тест: Матеріали</a>
+                <a href="../tests/assessment_rubric.html" class="nav-module-link">Критерії оцінювання</a>
+            </div>
+
+            <h1>📝 Тест: Топологія та полігональне моделювання</h1>
+            <p class="lead">Перевірте свої знання з модуля 1. Тест містить 20 питань різних типів. Рекомендований час виконання: 20-30 хвилин.</p>
+
+            <div class="quiz-container" id="quiz">
+                <!-- Питання 1 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">1</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Який тип полігонів вважається ідеальним для анімованих моделей?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="A"> A) Трикутники (Tris)</label>
+                        <label class="option"><input type="radio" name="q1" value="B"> B) Чотирикутники (Quads)</label>
+                        <label class="option"><input type="radio" name="q1" value="C"> C) Багатокутники (N-gons)</label>
+                        <label class="option"><input type="radio" name="q1" value="D"> D) П'ятикутники (Pentagons)</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 2 -->
+                <div class="question" data-correct="C">
+                    <div class="question-text">
+                        <span class="question-number">2</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Що таке Edge Loop?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="A"> A) Одиничне ребро на моделі</label>
+                        <label class="option"><input type="radio" name="q2" value="B"> B) Вершина, де сходяться 5+ ребер</label>
+                        <label class="option"><input type="radio" name="q2" value="C"> C) Послідовність ребер, що йдуть вздовж поверхні моделі</label>
+                        <label class="option"><input type="radio" name="q2" value="D"> D) Модифікатор для згладжування</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 3 -->
+                <div class="question" data-correct="A">
+                    <div class="question-text">
+                        <span class="question-number">3</span>
+                        <span class="question-type">Правда/Неправда</span>
+                    </div>
+                    <div class="question-text">Модифікатор Subdivision Surface збільшує кількість полігонів моделі.</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="A"> A) Правда</label>
+                        <label class="option"><input type="radio" name="q3" value="B"> B) Неправда</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 4 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">4</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Який модифікатор використовують для створення симетричних моделей?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="A"> A) Array</label>
+                        <label class="option"><input type="radio" name="q4" value="B"> B) Mirror</label>
+                        <label class="option"><input type="radio" name="q4" value="C"> C) Solidify</label>
+                        <label class="option"><input type="radio" name="q4" value="D"> D) Boolean</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 5 -->
+                <div class="question" data-correct="C">
+                    <div class="question-text">
+                        <span class="question-number">5</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Що таке ретопологія?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="A"> A) Спосіб освітлення сцени</label>
+                        <label class="option"><input type="radio" name="q5" value="B"> B) Створення нової текстури</label>
+                        <label class="option"><input type="radio" name="q5" value="C"> C) Процес створення чистої топології поверх скульптингу</label>
+                        <label class="option"><input type="radio" name="q5" value="D"> D) Анімація персонажа</label>
+                    </div>
+                    <div class="feedback"></div>
+                    <div class="hint">💡 Підказка: Згадайте урок 5 модуля 1</div>
+                </div>
+
+                <!-- Питання 6 -->
+                <div class="question" data-correct="A">
+                    <div class="question-text">
+                        <span class="question-number">6</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Який модифікатор дозволяє створювати отвори в об'єктах?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="A"> A) Boolean (Difference)</label>
+                        <label class="option"><input type="radio" name="q6" value="B"> B) Mirror</label>
+                        <label class="option"><input type="radio" name="q6" value="C"> C) Array</label>
+                        <label class="option"><input type="radio" name="q6" value="D"> D) Bevel</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 7 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">7</span>
+                        <span class="question-type">Правда/Неправда</span>
+                    </div>
+                    <div class="question-text">N-gons (багатокутники) є оптимальними для моделей, які будуть анімуватися.</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="A"> A) Правда</label>
+                        <label class="option"><input type="radio" name="q7" value="B"> B) Неправда</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 8 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">8</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Для чого використовується модифікатор Solidify?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="A"> A) Для згладжування моделі</label>
+                        <label class="option"><input type="radio" name="q8" value="B"> B) Для додавання товщини плоским поверхням</label>
+                        <label class="option"><input type="radio" name="q8" value="C"> C) Для створення дзеркальної симетрії</label>
+                        <label class="option"><input type="radio" name="q8" value="D"> D) Для вирізання отворів</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 9 -->
+                <div class="question" data-correct="A">
+                    <div class="question-text">
+                        <span class="question-number">9</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Як називається вершина, до якої приєднано більше ніж 4 ребра?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="A"> A) Полюс (Pole)</label>
+                        <label class="option"><input type="radio" name="q9" value="B"> B) Нормаль (Normal)</label>
+                        <label class="option"><input type="radio" name="q9" value="C"> C) Шов (Seam)</label>
+                        <label class="option"><input type="radio" name="q9" value="D"> D) Кріп (Crease)</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 10 -->
+                <div class="question" data-correct="A">
+                    <div class="question-text">
+                        <span class="question-number">10</span>
+                        <span class="question-type">Правда/Неправда</span>
+                    </div>
+                    <div class="question-text">Модифікатори в Blender є не-деструктивними (non-destructive).</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q10" value="A"> A) Правда</label>
+                        <label class="option"><input type="radio" name="q10" value="B"> B) Неправда</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 11 -->
+                <div class="question" data-correct="C">
+                    <div class="question-text">
+                        <span class="question-number">11</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Який модифікатор використовують для створення рядів однакових об'єктів (наприклад, паркану)?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q11" value="A"> A) Mirror</label>
+                        <label class="option"><input type="radio" name="q11" value="B"> B) Subdivision Surface</label>
+                        <label class="option"><input type="radio" name="q11" value="C"> C) Array</label>
+                        <label class="option"><input type="radio" name="q11" value="D"> D) Boolean</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 12 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">12</span>
+                        <span class="question-type">Правда/Неправда</span>
+                    </div>
+                    <div class="question-text">Перед використанням Texture Paint обов'язково потрібно створити UV-розгортку.</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q12" value="A"> A) Правда</label>
+                        <label class="option"><input type="radio" name="q12" value="B"> B) Неправда</label>
+                    </div>
+                    <div class="feedback"></div>
+                    <div class="hint">💡 Підказка: Створення текстури для малювання потребує UV-координат.</div>
+                </div>
+
+                <!-- Питання 13 -->
+                <div class="question" data-correct="A">
+                    <div class="question-text">
+                        <span class="question-number">13</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Що таке нормаль (Normal) в 3D-моделюванні?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q13" value="A"> A) Вектор, перпендикулярний до поверхні</label>
+                        <label class="option"><input type="radio" name="q13" value="B"> B) Тип модифікатора</label>
+                        <label class="option"><input type="radio" name="q13" value="C"> C) Спосіб освітлення</label>
+                        <label class="option"><input type="radio" name="q13" value="D"> D) Інструмент для скульптингу</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 14 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">14</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Який модифікатор додає скошені грані на гострих кутах?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q14" value="A"> A) Subdivision Surface</label>
+                        <label class="option"><input type="radio" name="q14" value="B"> B) Bevel</label>
+                        <label class="option"><input type="radio" name="q14" value="C"> C) Smooth</label>
+                        <label class="option"><input type="radio" name="q14" value="D"> D) Solidify</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 15 -->
+                <div class="question" data-correct="A">
+                    <div class="question-text">
+                        <span class="question-number">15</span>
+                        <span class="question-type">Правда/Неправда</span>
+                    </div>
+                    <div class="question-text">Модифікатор Subdivision Surface можна застосовувати лише до об'єктів з топологією з чотирикутників (quads).</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q15" value="A"> A) Правда</label>
+                        <label class="option"><input type="radio" name="q15" value="B"> B) Неправда</label>
+                    </div>
+                    <div class="feedback"></div>
+                    <div class="hint">💡 Підказка: На трикутниках Subdivision Surface працює гірше, створюючи артефакти.</div>
+                </div>
+
+                <!-- Питання 16 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">16</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Що таке Shrinkwrap модифікатор?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q16" value="A"> A) Модифікатор для створення копій об'єкта</label>
+                        <label class="option"><input type="radio" name="q16" value="B"> B) Модифікатор, який проєктує один об'єкт на поверхню іншого</label>
+                        <label class="option"><input type="radio" name="q16" value="C"> C) Модифікатор для додавання товщини</label>
+                        <label class="option"><input type="radio" name="q16" value="D"> D) Модифікатор для згладжування</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 17 -->
+                <div class="question" data-correct="C">
+                    <div class="question-text">
+                        <span class="question-number">17</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Яка комбінація клавіш створює Loop Cut в Blender?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q17" value="A"> A) Ctrl + B</label>
+                        <label class="option"><input type="radio" name="q17" value="B"> B) Ctrl + E</label>
+                        <label class="option"><input type="radio" name="q17" value="C"> C) Ctrl + R</label>
+                        <label class="option"><input type="radio" name="q17" value="D"> D) Shift + R</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 18 -->
+                <div class="question" data-correct="A">
+                    <div class="question-text">
+                        <span class="question-number">18</span>
+                        <span class="question-type">Правда/Неправда</span>
+                    </div>
+                    <div class="question-text">Перед застосуванням модифікатора Boolean рекомендується зберегти копію моделі.</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q18" value="A"> A) Правда</label>
+                        <label class="option"><input type="radio" name="q18" value="B"> B) Неправда</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 19 -->
+                <div class="question" data-correct="D">
+                    <div class="question-text">
+                        <span class="question-number">19</span>
+                        <span class="question-type">Множинний вибір</span>
+                    </div>
+                    <div class="question-text">Що таке Pole (полюс) в контексті топології?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q19" value="A"> A) Інструмент для вимірювання кута</label>
+                        <label class="option"><input type="radio" name="q19" value="B"> B) Тип освітлення</label>
+                        <label class="option"><input type="radio" name="q19" value="C"> C) Режим скульптингу</label>
+                        <label class="option"><input type="radio" name="q19" value="D"> D) Вершина, де сходиться нестандартна кількість ребер (3 або 5+)</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <!-- Питання 20 -->
+                <div class="question" data-correct="B">
+                    <div class="question-text">
+                        <span class="question-number">20</span>
+                        <span class="question-type">Правда/Неправда</span>
+                    </div>
+                    <div class="question-text">Модифікатор Array можна комбінувати з іншими модифікаторами, змінюючи порядок у стеку.</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q20" value="A"> A) Правда</label>
+                        <label class="option"><input type="radio" name="q20" value="B"> B) Неправда</label>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="quiz-results" id="results" style="display: none;">
+                    <span class="score" id="scoreValue">0</span>
+                    <p id="scoreMessage"></p>
+                </div>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn-check" onclick="checkAnswers()">✅ Перевірити відповіді</button>
+                    <button class="btn-reset" onclick="resetQuiz()">🔄 Скинути</button>
+                </div>
+            </div>
+
+            <div class="tip-box" style="margin-top: 2rem;">
+                <strong>📘 Ключові теми для повторення:</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li><strong>Урок 1:</strong> Вершини, ребра, грані, нормалі</li>
+                    <li><strong>Урок 2:</strong> Edge loops, правильна топологія, полюси</li>
+                    <li><strong>Урок 3-4:</strong> Модифікатори: Mirror, Subdivision Surface, Array, Boolean, Bevel, Solidify</li>
+                    <li><strong>Урок 5:</strong> Ретопологія, Shrinkwrap, Poly Build</li>
+                </ul>
+                <p style="margin-top: 0.5rem;">📖 <a href="../theory/01_topology.html" style="color: var(--primary-color);">Повернутися до модуля 1</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>3D моделювання: основи</h3>
+                    <p>Поглиблений курс для учнів 10-11 класів</p>
+                    <p class="footer-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="../theory/glossary.html">Глосарій</a>
+                    <a href="../practice/labs.html">Лабораторні</a>
+                    <a href="../tests/assessment_rubric.html">Критерії оцінювання</a>
+                </div>
+                <div class="footer-ai">
+                    <p>🧠 Контент створено з використанням ШІ</p>
+                    <small>Claude 3.5 Sonnet · GPT-4 · DALL-E 3 · Midjourney</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Всі права захищено згідно з ліцензією CC BY-NC-SA</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Правильні відповіді
+        const correctAnswers = {
+            q1: 'B',
+            q2: 'C',
+            q3: 'A',
+            q4: 'B',
+            q5: 'C',
+            q6: 'A',
+            q7: 'B',
+            q8: 'B',
+            q9: 'A',
+            q10: 'A',
+            q11: 'C',
+            q12: 'A',
+            q13: 'A',
+            q14: 'B',
+            q15: 'A',
+            q16: 'B',
+            q17: 'C',
+            q18: 'A',
+            q19: 'D',
+            q20: 'A'
+        };
+
+        // Пояснення для кожної відповіді
+        const explanations = {
+            q1: "Чотирикутники (quads) забезпечують передбачувану деформацію при анімації та коректну роботу модифікатора Subdivision Surface.",
+            q2: "Edge Loop — це послідовність ребер, що йдуть вздовж поверхні моделі, важливі для деформації та додавання деталей.",
+            q3: "Так, Subdivision Surface ділить кожну грань на менші та згладжує модель, збільшуючи кількість полігонів.",
+            q4: "Mirror дзеркально відображає модель по заданій осі, що дозволяє моделювати симетричні об'єкти, працюючи лише з половиною.",
+            q5: "Ретопологія — це створення чистої оптимізованої сітки поверх високодеталізованого скульптингу.",
+            q6: "Boolean Difference дозволяє вирізати отвори, віднімаючи один об'єкт від іншого.",
+            q7: "Неправда. N-gons створюють артефакти при деформації та анімації, тому їх слід уникати.",
+            q8: "Solidify додає товщину плоским поверхням, перетворюючи їх на об'ємні об'єкти.",
+            q9: "Полюс (Pole) — вершина, де сходиться 3 або 5+ ребер. Велика кількість полюсів може погіршити деформацію.",
+            q10: "Правда. Модифікатори не змінюють базову геометрію, поки не будуть застосовані (Apply).",
+            q11: "Array створює копії об'єкта в лінійному, круговому або сітчастому порядку.",
+            q12: "Правда. Для Texture Paint потрібна UV-розгортка, щоб Blender знав, куди накладати малюнок.",
+            q13: "Нормаль — це вектор, перпендикулярний до поверхні, який визначає, як світло відбивається від неї.",
+            q14: "Bevel додає фаски на гострих кутах, роблячи модель більш реалістичною.",
+            q15: "Правда. Subdivision Surface найкраще працює на quads. На tris та N-gons він створює артефакти.",
+            q16: "Shrinkwrap проєктує один об'єкт на поверхню іншого, використовується в ретопології.",
+            q17: "Ctrl + R — комбінація для створення Loop Cut в Edit Mode.",
+            q18: "Правда. Boolean може непередбачувано змінити топологію, тому краще зберігати копію.",
+            q19: "Полюс — вершина з нестандартною кількістю з'єднаних ребер (3 або 5+).",
+            q20: "Правда. Порядок модифікаторів впливає на результат, їх можна міняти місцями."
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(correctAnswers).length;
+            
+            for (let i = 1; i <= total; i++) {
+                const qName = `q${i
